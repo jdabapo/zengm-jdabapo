@@ -45,7 +45,10 @@ from YOUR_NAME_HERE (GITHUB_USERNAME_HERE)".
 ## Setup 
 
 First install [Node.js](https://nodejs.org/) 22 and [pnpm](https://pnpm.io/) 9.
-
+Then run this command to ensure node 22 is being run on the project.
+`nvm use`
+Can optionally verify this node version is being used:
+`node -version` 
 Then install the dependencies:
 
     pnpm install
