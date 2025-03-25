@@ -56,7 +56,7 @@ const updateDraftPicks = async (
 
 		const teamsRaw = await idb.getCopies.teamsPlus(
 			{
-				attrs: ["tid", "abbrev"],
+				attrs: ["tid", "abbrev", "strategy"],
 				seasonAttrs: ["lastTen", "won", "lost", "tied", "otl"],
 				stats: ["gp", "mov"],
 				season: g.get("season"),
@@ -104,6 +104,7 @@ const updateDraftPicks = async (
 				...dp,
 				originalAbbrev: t?.abbrev ?? "???",
 				avgAge: t?.powerRankings.avgAge,
+				strategy: t?.strategy,
 				ovr: t?.powerRankings.ovr,
 				powerRanking: t?.powerRankings.rank ?? Infinity,
 				record: {

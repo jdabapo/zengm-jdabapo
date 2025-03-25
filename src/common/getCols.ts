@@ -3298,6 +3298,10 @@ const cols: {
 		sortSequence: ["desc", "asc"],
 		sortType: "number",
 	},
+	Status: {
+		sortSequence: ["desc", "asc"],
+		sortType: "string",
+	},
 	"Three-Point Winner": {
 		desc: "Three-Point Contest Winner",
 	},

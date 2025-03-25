@@ -27,6 +27,7 @@ const DraftTeamHistory = ({
 			"Ovr",
 			"Record",
 			"AvgAge",
+			"Strategy",
 		],
 		{
 			"Draft Round": {
@@ -88,6 +89,7 @@ const DraftTeamHistory = ({
 				!challengeNoRatings ? dp.ovr : null,
 				helpers.formatRecord(dp.record),
 				dp.avgAge?.toFixed(1),
+				dp.strategy,
 			],
 		};
 	});
