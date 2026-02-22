@@ -28,7 +28,7 @@ const create = async (conditions: Conditions) => {
 		Infinity,
 	]);
 	const players = await idb.getCopies.playersPlus(playersAll, {
-		attrs: ["pid", "name", "tid", "injury"],
+		attrs: ["pid", "firstName", "name", "tid", "injury"],
 		ratings: ["pos", "ovr"],
 		stats: bySport({
 			baseball: [
