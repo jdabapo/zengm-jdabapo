@@ -125,7 +125,7 @@ const processTrade = async (
 				name: `${p.firstName} ${p.lastName}`,
 				contract: p.contract,
 				ratingsIndex: p.ratings.length - 1,
-				statsIndex: p.stats.length - 1,
+				statsIndex: p.stats.length, // Used to have 1 subtracted from it until addStatsRow was removed
 			});
 
 			if (teamSeason) {
