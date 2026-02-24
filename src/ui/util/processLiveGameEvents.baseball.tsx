@@ -299,13 +299,13 @@ export const getText = (
 				if (event.numBases === 1) {
 					text = "Single!";
 				} else if (event.numBases === 2) {
-					text = `Double (${event.seasonNumberOfHits} 2B)!`;
+					text = `Double! (${event.seasonNumberOfHits} 2B)`;
 				} else if (event.numBases === 3) {
-					text = `Triple (${event.seasonNumberOfHits} 3B)!`;
+					text = `Triple! (${event.seasonNumberOfHits} 3B)`;
 				} else if (event.runners.length === 3) {
-					text = `Grand slam (${event.seasonNumberOfHits} HR)!`;
+					text = `Grand slam! (${event.seasonNumberOfHits} HR)`;
 				} else {
-					text = `Home run (${event.seasonNumberOfHits} HR)!`;
+					text = `Home run! (${event.seasonNumberOfHits} HR)`;
 				}
 			} else if (event.result === "flyOut") {
 				text = `Caught by the ${
