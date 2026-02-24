@@ -215,9 +215,6 @@ const descriptionYdsTD = (
 	seasonTouchdownStats: number[],
 ) => {
 	const tdStats = () => {
-		if (!td) {
-			return "";
-		}
 		if (seasonTouchdownStats.length === 1) {
 			return `(${seasonTouchdownStats[0]} RushTD)`;
 		} else if (seasonTouchdownStats.length === 2) {
@@ -783,6 +780,7 @@ const processLiveGameEvents = ({
 			// Quarter-by-quarter score
 			if (e.s === "pts") {
 				const { ptsQtrs } = boxScore.teams[actualT!];
+				// eslint-disable-next-line unicorn/prefer-at
 				ptsQtrs[ptsQtrs.length - 1]! += e.amt;
 				boxScore.teams[actualT!].ptsQtrs = ptsQtrs;
 			}
