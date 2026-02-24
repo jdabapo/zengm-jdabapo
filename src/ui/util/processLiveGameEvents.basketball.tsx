@@ -214,15 +214,19 @@ export const getText = (
 		texts = ["The shot rims out", "No good", `${getPronoun("He")} bricks it`];
 		weights = [1, 4, 1];
 	} else if (event.type === "orb") {
-		const orb = playersByPid[event.pid]!.orb;
+		const trb =
+			(playersByPid[event.pid] as any).drb +
+			(playersByPid[event.pid] as any).orb;
 		texts = [
-			`${getName(event.pid)} grabbed the offensive rebound (${orb} ORB)`,
+			`${getName(event.pid)} grabbed the offensive rebound (${trb} TRB)`,
 		];
 	} else if (event.type === "drb") {
-		const drb = playersByPid[event.pid]!.drb;
+		const trb =
+			(playersByPid[event.pid] as any).drb +
+			(playersByPid[event.pid] as any).orb;
 
 		texts = [
-			`${getName(event.pid)} grabbed the defensive rebound (${drb} DRB)`,
+			`${getName(event.pid)} grabbed the defensive rebound (${trb} TRB)`,
 		];
 	} else if (event.type === "gameOver") {
 		texts = ["End of game"];
