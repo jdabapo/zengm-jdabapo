@@ -2292,7 +2292,9 @@ class GameSim extends GameSimBase {
 			t: this.o,
 			pid,
 			clock: this.t,
+			pidFoul: fouler?.id,
 		};
+
 		// assign correct log events
 		if (fgMakeLogType === "fgPutBackAndOne" || fgMakeLogType === "fgPutBack") {
 			this.playByPlay.logEvent({
@@ -2652,22 +2654,26 @@ class GameSim extends GameSimBase {
 		const t = info.t;
 		const p = info.fouler ?? this.pickPlayer("fouling", t, 1);
 		this.recordStat(t, p, "pf");
-		const baseLogInformation = {
-			t,
-			pid: p.id,
-			clock: this.t,
-		};
-		if (info.type === "pfNonShooting" || info.type === "pfAndOne") {
-			this.playByPlay.logEvent({
-				...baseLogInformation,
-				type: info.type,
-			});
-		} else {
-			this.playByPlay.logEvent({
-				...baseLogInformation,
-				type: info.type,
-				pidShooting: info.shooter.id,
-			});
+
+		// pfAndOne is handled in the shot event
+		if (info.type !== "pfAndOne") {
+			const baseLogInformation = {
+				t,
+				pid: p.id,
+				clock: this.t,
+			};
+			if (info.type === "pfNonShooting") {
+				this.playByPlay.logEvent({
+					...baseLogInformation,
+					type: info.type,
+				});
+			} else {
+				this.playByPlay.logEvent({
+					...baseLogInformation,
+					type: info.type,
+					pidShooting: info.shooter.id,
+				});
+			}
 		}
 
 		// Foul out

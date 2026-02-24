@@ -15,18 +15,17 @@ export type FgMissType =
 	| "missTp"
 	| "missTipIn";
 export type FgMakeNormalType = // fgAtRim/AndOne, ft,fgPutBack/AndOne excluded because they are handled separately
+	| "fgLowPost"
+	| "fgLowPostAndOne"
+	| "fgMidRange"
+	| "fgMidRangeAndOne"
+	| "tp"
+	| "tpAndOne"
+	| "fgTipIn"
+	| "fgTipInAndOne";
 
-		| "fgLowPost"
-		| "fgLowPostAndOne"
-		| "fgMidRange"
-		| "fgMidRangeAndOne"
-		| "tp"
-		| "tpAndOne"
-		| "fgTipIn"
-		| "fgTipInAndOne";
-
-export type FgMakeWithoutAstType = "ft" | "fgPutBack" | "fgPutBackAndOne";
-export type FgMakeWithDefenderType = "fgAtRimAndOne" | "fgAtRim";
+type FgMakeWithoutAstType = "fgPutBack" | "fgPutBackAndOne";
+type FgMakeWithDefenderType = "fgAtRimAndOne" | "fgAtRim";
 export type FgMakeType =
 	| FgMakeNormalType
 	| FgMakeWithoutAstType
@@ -39,6 +38,7 @@ type PlayByPlayEventInputScore =
 			pidDefense: number;
 			pidAst: number | undefined;
 			clock: number;
+			pidFoul: number | undefined;
 	  }
 	| {
 			type: FgMakeNormalType;
@@ -46,9 +46,17 @@ type PlayByPlayEventInputScore =
 			pid: number;
 			pidAst: number | undefined;
 			clock: number;
+			pidFoul: number | undefined;
 	  }
 	| {
 			type: FgMakeWithoutAstType;
+			t: TeamNum;
+			pid: number;
+			clock: number;
+			pidFoul: number | undefined;
+	  }
+	| {
+			type: "ft";
 			t: TeamNum;
 			pid: number;
 			clock: number;
@@ -61,7 +69,6 @@ type PlayByPlayEventInputNoScore =
 				| FgaType
 				| FgMissType
 				| "pfNonShooting"
-				| "pfAndOne"
 				| "drb"
 				| "orb"
 				| "foulOut"
@@ -86,7 +93,7 @@ type PlayByPlayEventInputNoScore =
 			desperation: boolean;
 	  }
 	| {
-			type: "fgaTipIn" | "fgTipInAndOne";
+			type: "fgaTipIn";
 			t: TeamNum;
 			pid: number;
 			clock: number;

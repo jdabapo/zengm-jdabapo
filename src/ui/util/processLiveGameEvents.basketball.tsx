@@ -265,10 +265,6 @@ export const getText = (
 				Three FTs for {getName(event.pidShooting)}
 			</>,
 		];
-	} else if (event.type === "pfAndOne") {
-		const pf = playersByPid[event.pid]!.pf;
-		// More description is already in the shot text
-		texts = [`Foul on ${getName(event.pid)} (${pf} PF)`];
 	} else if (event.type === "foulOut") {
 		texts = [
 			<span className="text-danger">{getName(event.pid)} fouled out</span>,
@@ -337,6 +333,19 @@ export const getText = (
 					<br />
 					<span className="text-body-secondary">
 						Assisted by {getName(eAny.pidAst)} ({ast} AST)
+					</span>
+				</>
+			);
+		}
+
+		if (eAny.pidFoul !== undefined) {
+			const pf = playersByPid[eAny.pidFoul]!.pf;
+			text = (
+				<>
+					{text}
+					<br />
+					<span className="text-body-secondary">
+						Foul on {getName(eAny.pidFoul)} ({pf} PF)
 					</span>
 				</>
 			);
