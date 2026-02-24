@@ -302,6 +302,7 @@ export const processTeam = async (
 				"defSk",
 				"fmb",
 				"defInt",
+				"pssInt",
 				"krTD",
 				"prTD",
 				"defFmbFrc",

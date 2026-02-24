@@ -10,7 +10,7 @@ export type PlayByPlayEventInputScore =
 			t: TeamNum;
 			td: boolean;
 			yds: number;
-			seasonKickReturnTd: number[];
+			totalKrTD: number;
 	  }
 	| {
 			type: "puntReturn";
@@ -19,7 +19,7 @@ export type PlayByPlayEventInputScore =
 			t: TeamNum;
 			td: boolean;
 			yds: number;
-			seasonPuntReturnTd: number[];
+			totalPrTD: number;
 	  }
 	| {
 			type: "fumbleRecovery";
@@ -33,13 +33,13 @@ export type PlayByPlayEventInputScore =
 			twoPointConversionTeam: TeamNum | undefined;
 			yds: number;
 			ydsBefore: number;
-			seasonFumbleForcedStats: number[]; // TODO: I dont know if this is appropriate; forced vs recovery? Might need to change the actual text
 	  }
 	| {
 			type: "interception";
 			clock: number;
 			names: string[];
-			seasonInterceptionStats: number[];
+			totalPssInt: number;
+			totalDefInt: number;
 			t: TeamNum;
 			twoPointConversionTeam: TeamNum | undefined;
 			yds: number;
@@ -48,7 +48,6 @@ export type PlayByPlayEventInputScore =
 			type: "interceptionReturn";
 			clock: number;
 			names: string[];
-			seasonInterceptionStats: number[];
 			t: TeamNum;
 			td: boolean;
 			touchback: boolean;
@@ -59,7 +58,8 @@ export type PlayByPlayEventInputScore =
 			type: "passComplete";
 			clock: number;
 			names: string[];
-			seasonPassTouchdownStats: number[];
+			totalPssTD: number;
+			totalRecTD: number;
 			safety: boolean;
 			t: TeamNum;
 			td: boolean;
@@ -70,7 +70,7 @@ export type PlayByPlayEventInputScore =
 			type: "run";
 			clock: number;
 			names: string[];
-			seasonRushTouchdownStats: number[];
+			totalRusTD: number;
 			safety: boolean;
 			t: TeamNum;
 			td: boolean;
@@ -104,7 +104,7 @@ export type PlayByPlayEventInputScore =
 			type: "sack";
 			clock: number;
 			names: string[];
-			seasonSackStats: number[];
+			totalDefSk: number;
 			safety: boolean;
 			t: TeamNum;
 			yds: number;
@@ -169,7 +169,8 @@ export type PlayByPlayEventInput =
 			type: "fumble";
 			clock: number;
 			names: string[];
-			seasonFumbleStats: number[];
+			totalFmb: number;
+			totalDefFmbFrc: number;
 			t: TeamNum;
 	  }
 	| {
