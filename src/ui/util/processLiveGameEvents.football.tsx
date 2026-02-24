@@ -221,9 +221,9 @@ const descriptionYdsTD = (
 			return "";
 		}
 		if (seasonTouchdownStats.length === 1) {
-			return ` ${formatLiveGameStat(seasonTouchdownStats[0], "RusTD", true)}`;
+			return formatLiveGameStat(seasonTouchdownStats[0], "RusTD", true);
 		} else if (seasonTouchdownStats.length === 2) {
-			return ` ${formatLiveGameStat(seasonTouchdownStats, ["PssTD", "RecTD"], true)}`;
+			return formatLiveGameStat(seasonTouchdownStats, ["PssTD", "RecTD"], true);
 		}
 	};
 	if (td && showYdsOnTD) {
@@ -277,7 +277,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 	} else if (event.type === "kickoffReturn") {
 		text = `${event.names[0]} returned the kickoff ${event.yds} yards${
 			event.td
-				? ` for a touchdown! ${formatLiveGameStat(event.totalKrTD, "KrTD", true)}`
+				? ` for a touchdown!${formatLiveGameStat(event.totalKrTD, "KrTD", true)}`
 				: ""
 		}`;
 	} else if (event.type === "onsideKick") {
@@ -301,7 +301,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 	} else if (event.type === "puntReturn") {
 		text = `${event.names[0]} returned the punt ${event.yds} yards${
 			event.td
-				? ` for a touchdown! ${formatLiveGameStat(event.totalPrTD, "PrTD", true)}`
+				? ` for a touchdown!${formatLiveGameStat(event.totalPrTD, "PrTD", true)}`
 				: ""
 		}`;
 	} else if (event.type === "extraPoint") {
@@ -313,7 +313,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 			event.yds
 		} yard field goal`;
 	} else if (event.type === "fumble") {
-		text = `${event.names[0]} fumbled the ball ${formatLiveGameStat(event.totalFmb, "Fmb", true)}! Forced fumble by ${event.names[1]} ${formatLiveGameStat(event.totalDefFmbFrc, "FmbFrc", true)}`;
+		text = `${event.names[0]} fumbled the ball${formatLiveGameStat(event.totalFmb, "Fmb", true)}! Forced fumble by ${event.names[1]}${formatLiveGameStat(event.totalDefFmbFrc, "FmbFrc", true)}`;
 	} else if (event.type === "fumbleRecovery") {
 		if (event.safety || event.touchback) {
 			text = (
@@ -349,7 +349,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 	} else if (event.type === "interception") {
 		text = (
 			<>
-				<span className="text-danger">Intercepted by {event.names[0]}!</span>{" "}
+				<span className="text-danger">Intercepted by {event.names[0]}!</span>
 				{formatLiveGameStat(
 					[event.totalPssInt, event.totalDefInt],
 					["PssInt", "DefInt"],
@@ -369,7 +369,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 	} else if (event.type === "sack") {
 		text = `${event.names[0]} was sacked by ${event.names[1]} for a ${
 			event.safety ? "safety!" : `${Math.abs(event.yds)} yard loss`
-		} ${formatLiveGameStat(event.totalDefSk, "DefSk", true)}`;
+		}${formatLiveGameStat(event.totalDefSk, "DefSk", true)}`;
 	} else if (event.type === "dropback") {
 		text = `${event.names[0]} drops back to pass`;
 	} else if (event.type === "passComplete") {

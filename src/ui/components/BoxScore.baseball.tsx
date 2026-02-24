@@ -353,7 +353,7 @@ const ScoringSummary = ({
 								</td>
 								<td>{getName(event.pid)}</td>
 								<td style={{ whiteSpace: "normal" }}>
-									{getText(event, getName).text}
+									{getText(event, getName, undefined).text}
 								</td>
 							</tr>
 						</Fragment>

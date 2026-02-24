@@ -148,7 +148,7 @@ const formatRunners = (
 export const getText = (
 	event: PlayByPlayEvent,
 	getName: (pid: number) => string,
-	sportState: SportState,
+	sportState: SportState | undefined,
 ) => {
 	let text;
 
@@ -190,12 +190,11 @@ export const getText = (
 			break;
 		}
 		case "strikeOut": {
-			const statTotal = formatLiveGameStat(
-				playersByPid[sportState.pitcherPid],
-				"soPit",
-			);
+			const statTotal = sportState
+				? formatLiveGameStat(playersByPid[sportState.pitcherPid], "soPit")
+				: "";
 			text = event.swinging
-				? `${helpers.pronoun(local.getState().gender, "He")} goes down swinging ${statTotal}`
+				? `${helpers.pronoun(local.getState().gender, "He")} goes down swinging${statTotal}`
 				: `Called strike three ${statTotal}`;
 			bold = true;
 			break;
@@ -304,13 +303,13 @@ export const getText = (
 				if (event.numBases === 1) {
 					text = "Single";
 				} else if (event.numBases === 2) {
-					text = `Double (${event.totalHits})`;
+					text = `Double${event.totalHits !== undefined ? ` (${event.totalHits})` : ""}`;
 				} else if (event.numBases === 3) {
-					text = `Triple (${event.totalHits})`;
+					text = `Triple${event.totalHits !== undefined ? ` (${event.totalHits})` : ""}`;
 				} else if (event.runners.length === 3) {
-					text = `Grand slam ${formatLiveGameStat(event.totalHits, "hr")}`;
+					text = `Grand slam${formatLiveGameStat(event.totalHits, "hr")}`;
 				} else {
-					text = `Home run (${event.totalHits})`;
+					text = `Home run${event.totalHits !== undefined ? ` (${event.totalHits})` : ""}`;
 				}
 			} else if (event.result === "flyOut") {
 				text = `Caught by the ${
@@ -391,11 +390,11 @@ export const getText = (
 			} else if (event.throw) {
 				text = `${getName(
 					event.pid,
-				)} beats the throw and is safe at ${getBaseName(event.to)} ${formatLiveGameStat(event.totalSb, "sb")}`;
+				)} beats the throw and is safe at ${getBaseName(event.to)}${formatLiveGameStat(event.totalSb, "sb")}`;
 			} else {
 				text = `${getName(event.pid)} steals ${getBaseName(
 					event.to,
-				)} with no throw ${formatLiveGameStat(event.totalSb, "sb")}`;
+				)} with no throw${formatLiveGameStat(event.totalSb, "sb")}`;
 			}
 			bold = true;
 			break;
