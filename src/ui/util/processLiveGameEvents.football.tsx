@@ -8,6 +8,7 @@ import type {
 import type { ReactNode } from "react";
 import { formatClock } from "../../common/formatClock.ts";
 import type { PlayerInjury } from "../../common/types.ts";
+import { formatLiveGameStat } from "./formatLiveGameStat.ts";
 type BoxScorePlayer = {
 	name: string;
 	pid: number;
@@ -216,17 +217,17 @@ const descriptionYdsTD = (
 ) => {
 	const tdStats = () => {
 		if (seasonTouchdownStats.length === 1) {
-			return `(${seasonTouchdownStats[0]} RushTD)`;
+			return formatLiveGameStat(seasonTouchdownStats[0], "rusTD", true);
 		} else if (seasonTouchdownStats.length === 2) {
-			return `(${seasonTouchdownStats[0]} PssTD, ${seasonTouchdownStats[1]} RecTD)`;
+			return formatLiveGameStat(seasonTouchdownStats, ["pssTD", "recTD"], true);
 		}
 	};
 	if (td && showYdsOnTD) {
-		return `${yds} yards${td ? ` and ${touchdownText} ${tdStats()}!` : ""}`;
+		return `${yds} yards${td ? ` and ${touchdownText}! ${tdStats()}` : ""}`;
 	}
 
 	if (td) {
-		return `${touchdownText} ${tdStats()}!`;
+		return `${touchdownText}! ${tdStats()}`;
 	}
 
 	return `${yds} yards`;
