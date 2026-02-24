@@ -298,15 +298,15 @@ export const getText = (
 				)}!`;
 			} else if (event.result === "hit") {
 				if (event.numBases === 1) {
-					text = "Single!";
+					text = "Single";
 				} else if (event.numBases === 2) {
-					text = `Double (${event.totalHits})!`;
+					text = `Double (${event.totalHits})`;
 				} else if (event.numBases === 3) {
-					text = `Triple (${event.totalHits})!`;
+					text = `Triple (${event.totalHits})`;
 				} else if (event.runners.length === 3) {
-					text = `Grand slam ${formatLiveGameStat(event.totalHits, "hr")}!`;
+					text = `Grand slam ${formatLiveGameStat(event.totalHits, "hr")}`;
 				} else {
-					text = `Home run (${event.totalHits})!`;
+					text = `Home run (${event.totalHits})`;
 				}
 			} else if (event.result === "flyOut") {
 				text = `Caught by the ${
