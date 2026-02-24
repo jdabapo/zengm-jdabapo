@@ -89,14 +89,19 @@ const getText = (
 	} else if (event.type === "goal") {
 		// text empty because PlayByPlayEntry handles it
 		// Not empty anymore to handle showing stats
-		text = ` (${event.names[0]} ${event.totalGA[0]} G)`;
+		text = `${event.names[0]} (${event.totalGA[0]})`;
 		if (event.names.length > 1) {
-			if (event.names.length === 2) {
-				text += ` (assist: ${event.names[1]} ${event.totalGA[1]} A)`;
-			} else if (event.names.length === 3) {
-				text += ` (assist: ${event.names[1]} ${event.totalGA[1]} A, ${event.names[2]} ${event.totalGA[2]} A)`;
+			text += ` assisted by ${event.names[1]} (${event.totalGA[1]})`;
+			if (event.names.length > 2) {
+				text += ` and ${event.names[2]} (${event.totalGA[2]})`;
 			}
 		}
+		text = (
+			<>
+				<br />
+				<span className="text-body-secondary">{text}</span>
+			</>
+		);
 	} else if (event.type === "offensiveLineChange") {
 		text = "Offensive line change";
 	} else if (event.type === "fullLineChange") {
