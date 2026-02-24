@@ -50,12 +50,8 @@ export const sportFunctions = (
 					configFile: false,
 					sourceMaps: true,
 					plugins: [
-						// THese should eventually get fixed https://github.com/babel/babel/issues/17777
-						// @ts-expect-error
 						babelPluginSyntaxTypescript,
-						// @ts-expect-error
 						...(isTsx ? [babelPluginSyntaxJsx] : []),
-						// @ts-expect-error
 						babelPluginSportFunctions,
 					],
 				});

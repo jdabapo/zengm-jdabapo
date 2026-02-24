@@ -172,14 +172,14 @@ importers:
         version: 5.0.11(@types/react@19.2.14)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
     devDependencies:
       '@babel/core':
-        specifier: 8.0.0-rc.1
-        version: 8.0.0-rc.1
+        specifier: 8.0.0-rc.2
+        version: 8.0.0-rc.2
       '@babel/plugin-syntax-jsx':
-        specifier: 8.0.0-rc.1
-        version: 8.0.0-rc.1(@babel/core@8.0.0-rc.1)
+        specifier: 8.0.0-rc.2
+        version: 8.0.0-rc.2(@babel/core@8.0.0-rc.2)
       '@babel/plugin-syntax-typescript':
-        specifier: 8.0.0-rc.1
-        version: 8.0.0-rc.1(@babel/core@8.0.0-rc.1)
+        specifier: 8.0.0-rc.2
+        version: 8.0.0-rc.2(@babel/core@8.0.0-rc.2)
       '@nkzw/eslint-config':
         specifier: 3.3.0
         version: 3.3.0(@typescript-eslint/eslint-plugin@8.56.0(@typescript-eslint/parser@8.56.0(eslint@10.0.1)(typescript@6.0.0-beta))(eslint@10.0.1)(typescript@6.0.0-beta))(@typescript-eslint/utils@8.56.0(eslint@10.0.1)(typescript@6.0.0-beta))(eslint@10.0.1)(typescript@6.0.0-beta)
@@ -332,8 +332,8 @@ packages:
     resolution: {integrity: sha512-CGOfOJqWjg2qW/Mb6zNsDm+u5vFQ8DxXfbM09z69p5Z6+mE1ikP2jUXw+j42Pf1XTYED2Rni5f95npYeuwMDQA==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/core@8.0.0-rc.1':
-    resolution: {integrity: sha512-oTiaza5UaPxaErnPc9VbG/xk2b6nH96e/FgsoRwtgXvNKA9HXzJe0balrZdP6sacjZ1+YsYXW6fTvUfu+vKn8g==}
+  '@babel/core@8.0.0-rc.2':
+    resolution: {integrity: sha512-mlBJdKJJEZNGDE+w+P6B5w+FTMkht1liPkxtB4wk39EpGH01Am5tg1htaNlOU5rO9Ge3psMjAFycpc3ru5uaQw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       '@babel/preset-typescript': ^8.0.0-0
@@ -524,17 +524,17 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/plugin-syntax-jsx@8.0.0-rc.1':
-    resolution: {integrity: sha512-770969y+uobXgL9bbr7lGfnTnqo0BaW5MWZHgrWkuzWWW/+Vvv/ImdwPGDvkYzpvR6q3tLXyKxMJeuXTJdxVQg==}
+  '@babel/plugin-syntax-jsx@8.0.0-rc.2':
+    resolution: {integrity: sha512-hR40k7aEbAt4llmecJUFYNrUHl/VsigJ8rSccQ8+Zd1vmBaa394bc0fpF2H8bVoo2bRANDNIlHMF3gJeDBJybQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
-      '@babel/core': ^7.0.0-0
+      '@babel/core': ^8.0.0-rc.2
 
-  '@babel/plugin-syntax-typescript@8.0.0-rc.1':
-    resolution: {integrity: sha512-0OuDEfCwBehr5D0ao3DeOhFEskxaypoXgU/qNT8Wss/VBJYwredPRT+xCupoUMWHn0DF6Tw1c69J85IFKuHE6w==}
+  '@babel/plugin-syntax-typescript@8.0.0-rc.2':
+    resolution: {integrity: sha512-rcSKMKsaW0/UeVpPoi9PVTPHOQkps+Pn16uDQm5tx15zGBuIJ/9hTS+uuD3rQAHdpE6dCgVWSE6hG5OA/vxebg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
-      '@babel/core': ^7.0.0-0
+      '@babel/core': ^8.0.0-rc.2
 
   '@babel/plugin-syntax-unicode-sets-regex@7.18.6':
     resolution: {integrity: sha512-727YkEAPwSIQTv5im8QHz3upqp92JTWhidIC81Tdx4VJYIte/VndKf1qKrfnnhPLiPghStWfvC/iFaMCQu7Nqg==}
@@ -4802,7 +4802,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/core@8.0.0-rc.1':
+  '@babel/core@8.0.0-rc.2':
     dependencies:
       '@babel/code-frame': 8.0.0-rc.2
       '@babel/generator': 8.0.0-rc.2
@@ -4922,9 +4922,9 @@ snapshots:
 
   '@babel/helper-plugin-utils@7.28.6': {}
 
-  '@babel/helper-plugin-utils@8.0.0-rc.2(@babel/core@8.0.0-rc.1)':
+  '@babel/helper-plugin-utils@8.0.0-rc.2(@babel/core@8.0.0-rc.2)':
     dependencies:
-      '@babel/core': 8.0.0-rc.1
+      '@babel/core': 8.0.0-rc.2
 
   '@babel/helper-remap-async-to-generator@7.27.1(@babel/core@7.29.0)':
     dependencies:
@@ -5038,15 +5038,15 @@ snapshots:
       '@babel/core': 7.29.0
       '@babel/helper-plugin-utils': 7.28.6
 
-  '@babel/plugin-syntax-jsx@8.0.0-rc.1(@babel/core@8.0.0-rc.1)':
+  '@babel/plugin-syntax-jsx@8.0.0-rc.2(@babel/core@8.0.0-rc.2)':
     dependencies:
-      '@babel/core': 8.0.0-rc.1
-      '@babel/helper-plugin-utils': 8.0.0-rc.2(@babel/core@8.0.0-rc.1)
+      '@babel/core': 8.0.0-rc.2
+      '@babel/helper-plugin-utils': 8.0.0-rc.2(@babel/core@8.0.0-rc.2)
 
-  '@babel/plugin-syntax-typescript@8.0.0-rc.1(@babel/core@8.0.0-rc.1)':
+  '@babel/plugin-syntax-typescript@8.0.0-rc.2(@babel/core@8.0.0-rc.2)':
     dependencies:
-      '@babel/core': 8.0.0-rc.1
-      '@babel/helper-plugin-utils': 8.0.0-rc.2(@babel/core@8.0.0-rc.1)
+      '@babel/core': 8.0.0-rc.2
+      '@babel/helper-plugin-utils': 8.0.0-rc.2(@babel/core@8.0.0-rc.2)
 
   '@babel/plugin-syntax-unicode-sets-regex@7.18.6(@babel/core@7.29.0)':
     dependencies:
