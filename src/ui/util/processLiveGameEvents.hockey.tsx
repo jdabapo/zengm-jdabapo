@@ -89,12 +89,12 @@ const getText = (
 	} else if (event.type === "goal") {
 		// text empty because PlayByPlayEntry handles it
 		// Not empty anymore to handle showing stats
-		text = ` (${event.names[0]} ${event.seasonStats[0]} G)`;
+		text = ` (${event.names[0]} ${event.totalGA[0]} G)`;
 		if (event.names.length > 1) {
-			if (event.seasonStats.length === 2) {
-				text += ` (assist: ${event.names[1]} ${event.seasonStats[1]} A)`;
-			} else if (event.seasonStats.length === 3) {
-				text += ` (assist: ${event.names[1]} ${event.seasonStats[1]} A, ${event.names[2]} ${event.seasonStats[2]} A)`;
+			if (event.names.length === 2) {
+				text += ` (assist: ${event.names[1]} ${event.totalGA[1]} A)`;
+			} else if (event.names.length === 3) {
+				text += ` (assist: ${event.names[1]} ${event.totalGA[1]} A, ${event.names[2]} ${event.totalGA[2]} A)`;
 			}
 		}
 	} else if (event.type === "offensiveLineChange") {
