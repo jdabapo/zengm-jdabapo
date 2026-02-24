@@ -12,7 +12,7 @@ import { sportFunctions } from "./tools/lib/rolldownPlugins/sportFunctions.ts";
 
 const footballTests = ["**/*.football/*.test.ts", "**/*.football.test.ts"];
 
-export const getCommon = (
+const makeProject = (
 	sport: Sport,
 	environment: "node" | "browser",
 	projectConfig: ProjectConfig,
@@ -40,36 +40,30 @@ export const getCommon = (
 export default defineConfig({
 	test: {
 		projects: [
-			{
-				...getCommon("basketball", "node", {
-					name: "basketball",
-					include: ["**/*.test.ts"],
-					exclude: [...configDefaults.exclude, ...footballTests],
-				}),
-			},
-			{
-				...getCommon("football", "node", {
-					name: "football",
-					include: footballTests,
-				}),
-			},
-			{
-				...getCommon("basketball", "browser", {
-					name: "browser",
-					include: ["**/*.test.browser.ts"],
-					browser: {
-						enabled: true,
-						headless: true,
-						provider: playwright(),
-						instances: [
-							{ browser: "chromium" },
-							{ browser: "firefox" },
-							{ browser: "webkit" },
-						],
-						screenshotFailures: false,
-					},
-				}),
-			},
+			makeProject("basketball", "node", {
+				name: "basketball",
+				include: ["**/*.test.ts"],
+				exclude: [...configDefaults.exclude, ...footballTests],
+			}),
+			makeProject("football", "node", {
+				name: "football",
+				include: footballTests,
+			}),
+			makeProject("basketball", "browser", {
+				name: "browser",
+				include: ["**/*.test.browser.ts"],
+				browser: {
+					enabled: true,
+					headless: true,
+					provider: playwright(),
+					instances: [
+						{ browser: "chromium" },
+						{ browser: "firefox" },
+						{ browser: "webkit" },
+					],
+					screenshotFailures: false,
+				},
+			}),
 		],
 	},
 });
