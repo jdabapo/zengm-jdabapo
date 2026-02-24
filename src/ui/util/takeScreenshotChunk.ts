@@ -101,7 +101,7 @@ const takeScreenshotChunk = async () => {
 				"x-rapidapi-key": "H6XlGK0RRnmshCkkElumAWvWjiBLp1ItTOBjsncst1BaYKMS8H",
 			},
 			data: {
-				image: canvas.toDataURL().split(",")[1],
+				image: canvas.toDataURL().split(",")[1]!,
 			},
 		});
 

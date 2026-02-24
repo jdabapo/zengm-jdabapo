@@ -98,7 +98,7 @@ async function add(
 			url: `${ACCOUNT_API_URL}/add_achievements.php`,
 			method: "POST",
 			data: {
-				achievements: slugs,
+				achievements: slugs.join(","),
 				sport: process.env.SPORT,
 				difficulty,
 			},

@@ -26,6 +26,10 @@ const ResetPassword = ({ token }: View<"resetPassword">) => {
 
 	useEffect(() => {
 		const checkToken = async () => {
+			if (token === undefined) {
+				return;
+			}
+
 			// First, see if this is a valid token
 			try {
 				const data = await fetchWrapper({

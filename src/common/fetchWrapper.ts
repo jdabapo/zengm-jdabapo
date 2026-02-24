@@ -10,22 +10,15 @@ const fetchWrapper = async ({
 	headers?: {
 		[key: string]: string;
 	};
-	data: any;
+	data: FormData | URLSearchParams | Record<string, string>;
 	credentials?: "include";
 }): Promise<any> => {
 	let body;
 
-	if (
-		(typeof FormData !== "undefined" && data instanceof FormData) ||
-		(typeof URLSearchParams !== "undefined" && data instanceof URLSearchParams)
-	) {
+	if (data instanceof FormData || data instanceof URLSearchParams) {
 		body = data;
 	} else if (data !== undefined) {
-		body = new URLSearchParams();
-
-		for (const key of Object.keys(data)) {
-			body.set(key, data[key]);
-		}
+		body = new URLSearchParams(data);
 	}
 
 	// For GET request, append data to query string, since fetch doesn't like GET and body
