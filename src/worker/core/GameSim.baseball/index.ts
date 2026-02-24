@@ -1915,7 +1915,7 @@ class GameSim extends GameSimBase {
 							);
 						}
 					}
-					const returnHitType = (numBases: 1 | 2 | 3 | 4) => {
+					const getHitType = (numBases: 1 | 2 | 3 | 4) => {
 						switch (numBases) {
 							case 1:
 								return "h";
@@ -1927,11 +1927,7 @@ class GameSim extends GameSimBase {
 								return "hr";
 						}
 					};
-					const determineSeasonHitsBeforeGame = (
-						hitType: "h" | "2b" | "3b" | "hr",
-					): number => {
-						return batter.seasonStats[hitType] ?? 0;
-					};
+					const hitType = getHitType(numBases);
 
 					this.playByPlay.logEvent({
 						type: "hitResult",
@@ -1943,9 +1939,7 @@ class GameSim extends GameSimBase {
 						numBases,
 						outAtNextBase: false,
 						...this.getSportState(),
-						seasonNumberOfHits:
-							batter.stat[returnHitType(numBases)] +
-							determineSeasonHitsBeforeGame(returnHitType(numBases)),
+						totalHits: batter.stat[hitType] + batter.seasonStats[hitType],
 					});
 				}
 

@@ -10,6 +10,7 @@ import {
 } from "../../common/constants.baseball.ts";
 import type { PlayerInjury } from "../../common/types.ts";
 import { formatScoringSummaryEvent } from "../../common/formatScoringSummaryEvent.baseball.ts";
+import { formatLiveGameStat } from "./formatLiveGameStat.ts";
 
 export type BoxScorePlayer = {
 	name: string;
@@ -188,10 +189,10 @@ export const getText = (
 			break;
 		}
 		case "strikeOut": {
-			const strikeOutText = event.totalSoPit;
+			const statTotal = formatLiveGameStat(event.totalSoPit, "soPit");
 			text = event.swinging
-				? `${helpers.pronoun(local.getState().gender, "He")} goes down swinging (${strikeOutText} SO)`
-				: `Called strike three (${strikeOutText} SO)`;
+				? `${helpers.pronoun(local.getState().gender, "He")} goes down swinging ${statTotal}`
+				: `Called strike three ${statTotal}`;
 			bold = true;
 			break;
 		}
@@ -299,13 +300,13 @@ export const getText = (
 				if (event.numBases === 1) {
 					text = "Single!";
 				} else if (event.numBases === 2) {
-					text = `Double! (${event.seasonNumberOfHits} 2B)`;
+					text = `Double (${event.totalHits})!`;
 				} else if (event.numBases === 3) {
-					text = `Triple! (${event.seasonNumberOfHits} 3B)`;
+					text = `Triple (${event.totalHits})!`;
 				} else if (event.runners.length === 3) {
-					text = `Grand slam! (${event.seasonNumberOfHits} HR)`;
+					text = `Grand slam ${formatLiveGameStat(event.totalHits, "hr")}!`;
 				} else {
-					text = `Home run! (${event.seasonNumberOfHits} HR)`;
+					text = `Home run (${event.totalHits})!`;
 				}
 			} else if (event.result === "flyOut") {
 				text = `Caught by the ${
@@ -386,11 +387,11 @@ export const getText = (
 			} else if (event.throw) {
 				text = `${getName(
 					event.pid,
-				)} beats the throw and is safe at ${getBaseName(event.to)} (${event.totalSb} SB)`;
+				)} beats the throw and is safe at ${getBaseName(event.to)} ${formatLiveGameStat(event.totalSb, "sb")}`;
 			} else {
 				text = `${getName(event.pid)} steals ${getBaseName(
 					event.to,
-				)}  (${event.totalSb} SB) with no throw`;
+				)} with no throw ${formatLiveGameStat(event.totalSb, "sb")}`;
 			}
 			bold = true;
 			break;
