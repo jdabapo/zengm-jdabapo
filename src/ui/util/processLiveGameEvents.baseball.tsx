@@ -148,6 +148,7 @@ const formatRunners = (
 export const getText = (
 	event: PlayByPlayEvent,
 	getName: (pid: number) => string,
+	sportState: SportState,
 ) => {
 	let text;
 
@@ -189,7 +190,10 @@ export const getText = (
 			break;
 		}
 		case "strikeOut": {
-			const statTotal = formatLiveGameStat(event.totalSoPit, "soPit");
+			const statTotal = formatLiveGameStat(
+				playersByPid[sportState.pitcherPid],
+				"soPit",
+			);
 			text = event.swinging
 				? `${helpers.pronoun(local.getState().gender, "He")} goes down swinging ${statTotal}`
 				: `Called strike three ${statTotal}`;
@@ -665,7 +669,7 @@ const processLiveGameEvents = ({
 				}
 			}
 
-			const output = getText(e, getName);
+			const output = getText(e, getName, sportState);
 			text = output.bold ? <b>{output.text}</b> : output.text;
 			textOnly =
 				e.type === "sideStart" ||

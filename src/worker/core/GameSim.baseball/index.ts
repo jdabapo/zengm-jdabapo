@@ -2129,7 +2129,6 @@ class GameSim extends GameSimBase {
 		this.playByPlay.logEvent({
 			type: "strikeOut",
 			swinging,
-			totalSoPit: pitcher.stat.soPit,
 			...this.getSportState(),
 		});
 	}
