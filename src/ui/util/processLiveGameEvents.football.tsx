@@ -211,23 +211,27 @@ export const formatDownAndDistance = (
 const descriptionYdsTD = (
 	yds: number,
 	td: boolean,
+	twoPointConversion: boolean,
 	touchdownText: string,
 	showYdsOnTD: boolean,
 	seasonTouchdownStats: number[],
 ) => {
 	const tdStats = () => {
+		if (twoPointConversion) {
+			return "";
+		}
 		if (seasonTouchdownStats.length === 1) {
-			return formatLiveGameStat(seasonTouchdownStats[0], "RusTD", true);
+			return ` ${formatLiveGameStat(seasonTouchdownStats[0], "RusTD", true)}`;
 		} else if (seasonTouchdownStats.length === 2) {
-			return formatLiveGameStat(seasonTouchdownStats, ["PssTD", "RecTD"], true);
+			return ` ${formatLiveGameStat(seasonTouchdownStats, ["PssTD", "RecTD"], true)}`;
 		}
 	};
 	if (td && showYdsOnTD) {
-		return `${yds} yards${td ? ` and ${touchdownText}! ${tdStats()}` : ""}`;
+		return `${yds} yards${td ? ` and ${touchdownText}!${tdStats()}` : ""}`;
 	}
 
 	if (td) {
-		return `${touchdownText}! ${tdStats()}`;
+		return `${touchdownText}!${tdStats()}`;
 	}
 
 	return `${yds} yards`;
@@ -380,6 +384,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 			const result = descriptionYdsTD(
 				event.yds,
 				event.td,
+				event.twoPointConversionTeam !== undefined,
 				touchdownText,
 				showYdsOnTD,
 				[event.totalPssTD, event.totalRecTD],
@@ -400,6 +405,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 			const result = descriptionYdsTD(
 				event.yds,
 				event.td,
+				event.twoPointConversionTeam !== undefined,
 				touchdownText,
 				showYdsOnTD,
 				[event.totalRusTD],

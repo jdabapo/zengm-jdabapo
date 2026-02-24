@@ -297,7 +297,9 @@ const processEvents = (events: PlayByPlayEventScore[], numPeriods: number) => {
 				prevEvent.score = score.slice();
 				prevEvent.text = (
 					<>
-						{prevEvent.text} ({text})
+						{prevEvent.text}
+						<br />
+						<span className="text-body-secondary">{text}</span>
 					</>
 				);
 			} else {
@@ -345,7 +347,7 @@ const ScoringSummary = memo(
 		}
 
 		return (
-			<table className="table table-sm border-bottom">
+			<table className="table table-sm border-bottom align-top-all">
 				<tbody>
 					{processedEvents.map((event, i) => {
 						let quarterHeader: ReactNode = null;
