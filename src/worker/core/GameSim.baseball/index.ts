@@ -1026,7 +1026,7 @@ class GameSim extends GameSimBase {
 				throw: throwAt === i,
 				outAtNextBase: false,
 				...this.getSportState(),
-				totalSb: p.seasonStats.sb + p.stat["sb"],
+				totalSb: this.allStarGame ? undefined : p.seasonStats.sb + p.stat["sb"],
 			});
 		}
 	}
@@ -1939,7 +1939,9 @@ class GameSim extends GameSimBase {
 						numBases,
 						outAtNextBase: false,
 						...this.getSportState(),
-						totalHits: batter.stat[hitType] + batter.seasonStats[hitType],
+						totalHits: this.allStarGame
+							? undefined
+							: batter.stat[hitType] + batter.seasonStats[hitType],
 					});
 				}
 
