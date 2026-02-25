@@ -72,7 +72,7 @@ class GameSim extends GameSimBase {
 		doPlayByPlay,
 		homeCourtFactor,
 		dh,
-		allStarGame = false,
+		allStarGame,
 		baseInjuryRate,
 		neutralSite,
 	}: {
