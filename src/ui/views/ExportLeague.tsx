@@ -6,13 +6,7 @@ import {
 	gameAttributesKeysTeams,
 } from "../../common/defaultGameAttributes.ts";
 import { types } from "../../common/transactionInfo.ts";
-import type {
-	EventBBGM,
-	GameAttribute,
-	Player,
-	Team,
-	View,
-} from "../../common/types.ts";
+import type { View } from "../../common/types.ts";
 import type { LeagueDBStoreNames } from "../../worker/db/connectLeague.ts";
 import {
 	ActionButton,
@@ -26,6 +20,7 @@ import {
 	toWorker,
 	useLocal,
 } from "../util/index.ts";
+import type makeExportStream from "../util/makeExportStream.ts";
 
 const HAS_FILE_SYSTEM_ACCESS_API = !!window.showSaveFilePicker;
 
@@ -340,14 +335,16 @@ const getExportInfo = (
 		checked.schedule ||
 		checked.draftPicks;
 
-	const filter: any = {};
+	type MakeExportStreamOptions = Parameters<typeof makeExportStream>[1];
+
+	const filter: MakeExportStreamOptions["filter"] = {};
 	if (checked.newsFeedTransactions && !checked.newsFeedOther) {
-		filter.events = (event: EventBBGM) => {
+		filter.events = (event) => {
 			const category = types[event.type]?.category;
 			return category === "transaction" || category === "draft";
 		};
 	} else if (!checked.newsFeedTransactions && checked.newsFeedOther) {
-		filter.events = (event: EventBBGM) => {
+		filter.events = (event) => {
 			const category = types[event.type]?.category;
 			return category !== "transaction" && category !== "draft";
 		};
@@ -357,7 +354,7 @@ const getExportInfo = (
 		checked.teamsBasic ||
 		includeAtLeastSeasonAndStartingSeason
 	) {
-		filter.gameAttributes = (row: GameAttribute<any>) => {
+		filter.gameAttributes = (row) => {
 			if (includeAtLeastSeasonAndStartingSeason) {
 				if (row.key === "season" || row.key === "startingSeason") {
 					return true;
@@ -400,9 +397,9 @@ const getExportInfo = (
 		};
 	}
 
-	const forEach: any = {};
+	const forEach: MakeExportStreamOptions["forEach"] = {};
 	if (checked.players && !checked.gameHighs) {
-		forEach.players = (p: Player) => {
+		forEach.players = (p) => {
 			for (const row of p.stats) {
 				for (const stat of stats.max) {
 					delete row[stat];
@@ -411,10 +408,10 @@ const getExportInfo = (
 		};
 	}
 
-	const map: any = {};
+	const map: MakeExportStreamOptions["map"] = {};
 	const teamsBasicOnly = checked.teamsBasic && !checked.teams;
 	if (teamsBasicOnly) {
-		map.teams = (t: Team) => {
+		map.teams = (t) => {
 			return {
 				tid: t.tid,
 				abbrev: t.abbrev,
@@ -535,9 +532,8 @@ const ExportLeague = ({ stats }: View<"exportLeague">) => {
 
 			const { stores, filter, forEach, map } = getExportInfo(stats, checked);
 
-			const { downloadFileStream, makeExportStream } = await import(
-				"../util/exportLeague.ts"
-			);
+			const { downloadFileStream, makeExportStream } =
+				await import("../util/exportLeague.ts");
 
 			abortController.current = new AbortController();
 
@@ -864,9 +860,8 @@ const ExportLeague = ({ stats }: View<"exportLeague">) => {
 											return;
 										}
 
-										const { getAuthenticationUrl } = await import(
-											"../util/dropbox.ts"
-										);
+										const { getAuthenticationUrl } =
+											await import("../util/dropbox.ts");
 										const url = await getAuthenticationUrl(lid);
 
 										// Remember what was checked, since local state will be lost during redirect

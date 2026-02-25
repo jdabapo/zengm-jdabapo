@@ -39,7 +39,7 @@ export const randInt = (a: number, b: number, seed?: number): number => {
  * @memberOf util.random
  * @param {array} list List to be shuffled in place.
  */
-export const shuffle = (list: any[], seed?: number) => {
+export const shuffle = (list: unknown[], seed?: number) => {
 	const l = list.length;
 
 	for (let i = 1; i < l; i++) {

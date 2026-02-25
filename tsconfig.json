@@ -25,6 +25,7 @@
 		"erasableSyntaxOnly": true,
 		"jsx": "react-jsx",
 		"types": [
+			"google-publisher-tag",
 			"gtag.js",
 			"stripe-checkout",
 			"stripe-v2",

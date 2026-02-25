@@ -10,7 +10,10 @@ import {
 } from "../../common/defaultGameAttributes.ts";
 import { local } from "./local.ts";
 import toWorker from "./toWorker.ts";
-import type { LeagueDB } from "../../worker/db/connectLeague.ts";
+import type {
+	LeagueDB,
+	LeagueDBStoreNames,
+} from "../../worker/db/connectLeague.ts";
 
 // Otherwise it often pulls just one record per transaction, as it's hitting up against the high water mark
 const TWENTY_MEGABYTES_IN_BYTES = 20 * 1024 * 1024;
@@ -42,10 +45,12 @@ const stringSizeInBytes = (str: string | undefined) => {
 
 const NUM_SPACES_IN_TAB = 2;
 
-type Filter = (a: any) => boolean;
+type ProcessStores<ReturnType extends unknown> = Partial<{
+	[K in LeagueDBStoreNames]?: (a: LeagueDB[K]["value"]) => ReturnType;
+}>;
 
 const makeExportStream = async (
-	storesInput: string[],
+	storesInput: LeagueDBStoreNames[],
 	{
 		abortSignal,
 		compressed = false,
@@ -59,15 +64,9 @@ const makeExportStream = async (
 	}: {
 		abortSignal?: AbortSignal;
 		compressed?: boolean;
-		filter?: {
-			[key: string]: Filter;
-		};
-		forEach?: {
-			[key: string]: (a: any) => void;
-		};
-		map?: {
-			[key: string]: (a: any) => any;
-		};
+		filter?: ProcessStores<boolean>;
+		forEach?: ProcessStores<void>;
+		map?: ProcessStores<any>;
 		name?: string;
 		onPercentDone?: (percentDone: number) => void;
 		onProcessingStore?: (processingStore: string) => void;
