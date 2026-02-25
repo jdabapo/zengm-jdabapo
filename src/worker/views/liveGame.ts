@@ -185,9 +185,11 @@ const updatePlayByPlay = async (
 		inputs.playByPlay !== undefined &&
 		inputs.playByPlay.length > 0
 	) {
-		const boxScore: any = helpers.deepCopy(
-			await idb.cache.games.get(inputs.gid),
-		);
+		const boxScore = await idb.getCopy.games({ gid: inputs.gid });
+
+		if (!boxScore) {
+			throw new Error("Invalid gid");
+		}
 
 		const allStarGame =
 			boxScore.teams[0].tid === -1 || boxScore.teams[1].tid === -1;
@@ -202,7 +204,11 @@ const updatePlayByPlay = async (
 		}
 
 		let confetti = false;
-		if (boxScore.playoffs && g.get("phase") >= PHASE.PLAYOFFS) {
+		if (
+			boxScore.playoffs &&
+			boxScore.numGamesToWinSeries !== undefined &&
+			g.get("phase") >= PHASE.PLAYOFFS
+		) {
 			const playoffSeries = await idb.cache.playoffSeries.get(g.get("season"));
 			if (playoffSeries) {
 				const finalRound = playoffSeries.series.at(-1);
