@@ -200,9 +200,9 @@ const FinancesForm = ({
 		}
 	}, [dirty, t]);
 
-	const setStateValue = (
-		name: Exclude<keyof typeof state, "saving">,
-		value: any,
+	const setStateValue = <Name extends Exclude<keyof typeof state, "saving">>(
+		name: Name,
+		value: (typeof state)[Name],
 	) => {
 		setState((state2) => ({
 			...state2,
@@ -387,7 +387,10 @@ const FinancesForm = ({
 												levelInt <= 1
 											}
 											onClick={() => {
-												setStateValue(expenseCategory.key, levelInt - 1);
+												setStateValue(
+													expenseCategory.key,
+													String(levelInt - 1),
+												);
 											}}
 										>
 											−
@@ -409,7 +412,10 @@ const FinancesForm = ({
 												levelInt >= MAX_LEVEL
 											}
 											onClick={() => {
-												setStateValue(expenseCategory.key, levelInt + 1);
+												setStateValue(
+													expenseCategory.key,
+													String(levelInt + 1),
+												);
 											}}
 										>
 											+
