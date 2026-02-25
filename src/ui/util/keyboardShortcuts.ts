@@ -221,7 +221,7 @@ export const getEventKey = (event: KeyboardEvent) => {
 		if (event.code && event.code.startsWith("Key")) {
 			const codeLetter = event.code.slice(3); // Remove "Key" prefix
 			if (codeLetter.length === 1 && /^[A-Za-z]$/.test(codeLetter)) {
-				return codeLetter;
+				return codeLetter.toLowerCase();
 			}
 		}
 		if (event.code && event.code.startsWith("Digit")) {
