@@ -214,10 +214,10 @@ const descriptionYdsTD = (
 	twoPointConversion: boolean,
 	touchdownText: string,
 	showYdsOnTD: boolean,
-	seasonTouchdownStats: number[],
+	seasonTouchdownStats: [number] | [number, number] | undefined, // undefined means old box score without this data
 ) => {
 	const tdStats = () => {
-		if (twoPointConversion) {
+		if (twoPointConversion || !seasonTouchdownStats) {
 			return "";
 		}
 		if (seasonTouchdownStats.length === 1) {
@@ -387,7 +387,9 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 				event.twoPointConversionTeam !== undefined,
 				touchdownText,
 				showYdsOnTD,
-				[event.totalPssTD, event.totalRecTD],
+				event.totalPssTD !== undefined && event.totalRecTD !== undefined
+					? [event.totalPssTD, event.totalRecTD]
+					: undefined,
 			);
 			text = `${event.names[0]} completed a pass to ${event.names[1]} for ${result}`;
 		}
@@ -408,7 +410,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 				event.twoPointConversionTeam !== undefined,
 				touchdownText,
 				showYdsOnTD,
-				[event.totalRusTD],
+				event.totalRusTD !== undefined ? [event.totalRusTD] : undefined,
 			);
 			text = `${event.names[0]} rushed for ${result}`;
 		}

@@ -5,11 +5,11 @@ type POrValue = number | undefined | any;
 
 const getInner = (pOrValue: POrValue, stat: string, raw?: boolean) => {
 	if (pOrValue === undefined) {
-		return "";
+		return undefined;
 	}
 	const value = typeof pOrValue === "number" ? pOrValue : pOrValue[stat];
 	if (value === undefined) {
-		return "";
+		return undefined;
 	}
 	const statName = raw ? stat : getCol(`stat:${stat}`).title;
 	return `${value} ${statName}`;
@@ -28,12 +28,23 @@ export const formatLiveGameStat: FormatLiveGameStat = (
 	raw?: boolean,
 ) => {
 	if (Array.isArray(stat)) {
-		return ` (${stat
+		let missingStat = false;
+		const output = ` (${stat
 			.map((s, i) => {
-				return getInner((pOrValue as any)[i], s, raw);
+				const inner = getInner((pOrValue as any)[i], s, raw);
+				if (inner === undefined) {
+					missingStat = true;
+				}
+				return inner;
 			})
 			.join(", ")})`;
+
+		return missingStat ? "" : output;
 	}
 
+	// Old box score without this data.
+	if (pOrValue === undefined) {
+		return "";
+	}
 	return ` (${getInner(pOrValue as any, stat, raw)})`;
 };
