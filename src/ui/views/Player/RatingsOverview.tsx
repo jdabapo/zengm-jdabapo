@@ -9,24 +9,18 @@ const RatingsOverview = ({
 	ratings: any[];
 	season?: number;
 }) => {
-	let currentSeason: any;
-
+	let currentSeason;
 	if (season === undefined) {
 		// Use latest season
 		currentSeason = ratings.at(-1);
 	} else {
 		currentSeason =
-			ratings.find((row) => row.season === season) ?? ratings.at(-1);
+			ratings.findLast((row) => row.season === season) ?? ratings.at(-1);
 	}
 
-	let lastSeason = currentSeason;
-	// Search backwards to find the last entry from last season, in the case where there are multiple rows due to injuries
-	for (let i = ratings.length - 1; i >= 0; i--) {
-		if (ratings[i].season === currentSeason.season - 1) {
-			lastSeason = ratings[i];
-			break;
-		}
-	}
+	const lastSeason =
+		ratings.findLast((row) => row.season === currentSeason.season - 1) ??
+		currentSeason;
 
 	const columns = bySport<
 		Record<
@@ -505,12 +499,9 @@ const RatingsOverview = ({
 												<td className="p-0">{label}:</td>
 												<td className="p-0 ps-1">
 													<RatingWithChange
-														change={
-															(currentSeason as any)[rating] -
-															(lastSeason as any)[rating]
-														}
+														change={currentSeason[rating] - lastSeason[rating]}
 													>
-														{(currentSeason as any)[rating]}
+														{currentSeason[rating]}
 													</RatingWithChange>
 												</td>
 											</tr>
