@@ -104,10 +104,31 @@ const updatePlayerGameLog = async (
 				processed,
 			};
 
-			const types = [];
+			let types = [];
 			for (const [type, { stats }] of Object.entries(PLAYER_GAME_STATS)) {
 				if (filterPlayerStats(p, stats, type)) {
 					types.push(type);
+				}
+			}
+			if (isSport("baseball")) {
+				// bestPos is career, would be better to look at just this season, but that should very rarely matter
+				if (
+					(topStuff.bestPos === "SP" || topStuff.bestPos === "RP") &&
+					types.includes("pitching") &&
+					types.includes("batting")
+				) {
+					// Primarily a pitcher, so show pitching stats first - keep in sync with player.ts
+					types = types.map((type) => {
+						if (type === "pitching") {
+							return "batting";
+						}
+
+						if (type === "batting") {
+							return "pitching";
+						}
+
+						return type;
+					});
 				}
 			}
 
