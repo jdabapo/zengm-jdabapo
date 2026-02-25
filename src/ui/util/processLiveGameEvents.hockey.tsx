@@ -89,11 +89,11 @@ const getText = (
 	} else if (event.type === "goal") {
 		// text empty because PlayByPlayEntry handles it
 		// Not empty anymore to handle showing stats
-		text = `${event.names[0]} (${event.totalGA[0]})`;
+		text = `${event.names[0]}${event.totalGA ? ` (${event.totalGA[0]})` : ""}`;
 		if (event.names.length > 1) {
-			text += ` assisted by ${event.names[1]} (${event.totalGA[1]})`;
+			text += ` assisted by ${event.names[1]}${event.totalGA ? ` (${event.totalGA[1]})` : ""}`;
 			if (event.names.length > 2) {
-				text += ` and ${event.names[2]} (${event.totalGA[2]})`;
+				text += ` and ${event.names[2]}${event.totalGA ? ` (${event.totalGA[2]})` : ""}`;
 			}
 		}
 		text = (

@@ -11,7 +11,13 @@ type PlayByPlayEventInputScore =
 			pids: [number] | [number, number] | [number, number, number];
 			goalType: "ev" | "sh" | "pp" | "en";
 			shotType: string;
-			totalGA: [number] | [number, number] | [number, number, number];
+
+			// undefined in ASG or old box scores
+			totalGA:
+				| [number]
+				| [number, number]
+				| [number, number, number]
+				| undefined;
 	  }
 	| {
 			type: "shootoutShot";

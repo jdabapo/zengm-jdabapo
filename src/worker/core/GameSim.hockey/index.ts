@@ -1070,7 +1070,7 @@ class GameSim extends GameSimBase {
 			pids: [actualShooter.id, ...assisterPIDs],
 			shotType: deflector ? "deflection" : type,
 			goalType: this.pulledGoalie[this.d] ? "en" : strengthType,
-			totalGA: [totalG, ...totalA],
+			totalGA: this.allStarGame ? undefined : [totalG, ...totalA],
 		});
 
 		this.penaltyBox.goal(this.o);
