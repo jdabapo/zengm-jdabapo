@@ -236,7 +236,7 @@ const StatsTable = ({
 	);
 };
 
-const missSymbol = <span className="text-danger">✕ </span>;
+const MissSymbol = () => <span className="text-danger">✕ </span>;
 
 // Condenses TD + XP/2P into one event rather than two, and normalizes scoring summary events into consistent format (old style format had the text in it already, new one is just raw metadata from game sim)
 const processEvents = (events: PlayByPlayEventScore[], numPeriods: number) => {
@@ -303,7 +303,7 @@ const processEvents = (events: PlayByPlayEventScore[], numPeriods: number) => {
 						{prevEvent.text}
 						<br />
 						<span className="text-body-secondary">
-							{pts === 0 ? missSymbol : null}
+							{pts === 0 ? <MissSymbol /> : null}
 							{text}
 						</span>
 					</>
@@ -420,7 +420,7 @@ const ScoringSummary = memo(
 									</td>
 									<td>{currentQuarter !== "SH" ? event.time : null}</td>
 									<td style={{ whiteSpace: "normal" }}>
-										{event.noPoints ? missSymbol : null}
+										{event.noPoints ? <MissSymbol /> : null}
 										{event.text}
 									</td>
 								</tr>
