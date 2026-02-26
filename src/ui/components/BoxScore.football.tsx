@@ -408,7 +408,9 @@ const ScoringSummary = memo(
 														className={
 															!event.noPoints && event.t === i
 																? "fw-bold"
-																: "text-body-secondary"
+																: event.noPoints && event.t === i
+																	? "text-danger"
+																	: "text-body-secondary"
 														}
 													>
 														{pts}
