@@ -4,6 +4,7 @@ import {
 	RATINGS,
 	PLAYER_SUMMARY,
 	DEFAULT_JERSEY,
+	isSport,
 } from "../../common/index.ts";
 import { player } from "../core/index.ts";
 import { idb } from "../db/index.ts";
@@ -187,10 +188,6 @@ export const getCommon = async (pid?: number, season?: number) => {
 	}
 
 	await face.upgrade(pRaw);
-
-	const statSummary = Object.values(PLAYER_SUMMARY);
-
-	const statTables = Object.values(PLAYER_STATS_TABLES);
 
 	const p = await getPlayer(pRaw);
 
@@ -395,6 +392,26 @@ export const getCommon = async (pid?: number, season?: number) => {
 			league: true,
 			children,
 		};
+	}
+
+	const statSummary = Object.values(PLAYER_SUMMARY);
+
+	let statTables;
+	if (isSport("baseball") && (bestPos === "SP" || bestPos === "RP")) {
+		// Primarily a pitcher, so show pitching stats first - keep in sync with playerGameLog.ts
+		statTables = Object.keys(PLAYER_STATS_TABLES).map((type) => {
+			if (type === "pitching") {
+				return PLAYER_STATS_TABLES.batting!;
+			}
+
+			if (type === "batting") {
+				return PLAYER_STATS_TABLES.pitching!;
+			}
+
+			return PLAYER_STATS_TABLES[type]!;
+		});
+	} else {
+		statTables = Object.values(PLAYER_STATS_TABLES);
 	}
 
 	let teamURL;

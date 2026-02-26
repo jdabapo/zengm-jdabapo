@@ -6,7 +6,12 @@ import {
 	setTeamInfo,
 	type TeamSeasonOverride,
 } from "./gameLog.ts";
-import type { AllStars, UpdateEvents, ViewInput } from "../../common/types.ts";
+import type {
+	AllStars,
+	Game,
+	UpdateEvents,
+	ViewInput,
+} from "../../common/types.ts";
 import {
 	bySport,
 	getPeriodName,
@@ -24,7 +29,7 @@ export const boxScoreToLiveSim = async ({
 	teamSeasonOverrides,
 }: {
 	allStars: AllStars | undefined;
-	boxScore: any;
+	boxScore: Game;
 	confetti: boolean;
 	playByPlay: any[];
 	teamSeasonOverrides?: [TeamSeasonOverride, TeamSeasonOverride];
@@ -41,59 +46,61 @@ export const boxScoreToLiveSim = async ({
 		resetStatsTeam.push(...team.stats.byPos);
 	}
 
+	const initialBoxScore: any = boxScore;
+
 	if (isSport("basketball")) {
 		resetStatsTeam.push("ba");
 
-		boxScore.elam = allStars ? g.get("elamASG") : g.get("elam");
-		boxScore.elamOvertime = g.get("elamOvertime");
+		initialBoxScore.elam = allStars ? g.get("elamASG") : g.get("elam");
+		initialBoxScore.elamOvertime = g.get("elamOvertime");
 	}
 
-	boxScore.overtime = "";
-	boxScore.quarter = "";
+	initialBoxScore.overtime = "";
+	initialBoxScore.quarter = "";
 
 	// Initialize quarterShort so there is something to display immediately
-	boxScore.quarterShort = bySport({
+	initialBoxScore.quarterShort = bySport({
 		baseball: "1",
 		default:
-			boxScore.numPeriods === 0
+			initialBoxScore.numPeriods === 0
 				? "OT"
-				: `${getPeriodName(boxScore.numPeriods, true)}1`,
+				: `${getPeriodName(initialBoxScore.numPeriods, true)}1`,
 	});
 
 	// Basketball clock is in seconds
 	const clock = isSport("basketball")
 		? g.get("quarterLength") * 60
 		: g.get("quarterLength");
-	boxScore.time = formatClock(clock);
-	boxScore.gameOver = false;
-	delete boxScore.shootout;
+	initialBoxScore.time = formatClock(clock);
+	initialBoxScore.gameOver = false;
+	delete initialBoxScore.shootout;
 
 	for (const i of [0, 1] as const) {
-		const t = boxScore.teams[i];
+		const t = initialBoxScore.teams[i];
 
 		// Fix records, taking out result of this game
 		// Keep in sync with LiveGame.tsx
-		if (boxScore.playoffs) {
+		if (initialBoxScore.playoffs) {
 			if (t.playoffs) {
-				if (boxScore.won.tid === t.tid) {
+				if (initialBoxScore.won.tid === t.tid) {
 					t.playoffs.won -= 1;
-				} else if (boxScore.lost.tid === t.tid) {
+				} else if (initialBoxScore.lost.tid === t.tid) {
 					t.playoffs.lost -= 1;
 				}
 			}
 		} else {
 			if (
-				boxScore.won.pts === boxScore.lost.pts &&
-				boxScore.won.sPts === boxScore.lost.sPts
+				initialBoxScore.won.pts === initialBoxScore.lost.pts &&
+				initialBoxScore.won.sPts === initialBoxScore.lost.sPts
 			) {
 				// Tied!
 				if (t.tied !== undefined) {
 					t.tied -= 1;
 				}
-			} else if (boxScore.won.tid === t.tid) {
+			} else if (initialBoxScore.won.tid === t.tid) {
 				t.won -= 1;
-			} else if (boxScore.lost.tid === t.tid) {
-				if (boxScore.overtimes > 0 && otl) {
+			} else if (initialBoxScore.lost.tid === t.tid) {
+				if (initialBoxScore.overtimes > 0 && otl) {
 					t.otl -= 1;
 				} else {
 					t.lost -= 1;
@@ -101,7 +108,13 @@ export const boxScoreToLiveSim = async ({
 			}
 		}
 
-		await setTeamInfo(t, i, allStars, boxScore, teamSeasonOverrides?.[i]);
+		await setTeamInfo(
+			t,
+			i,
+			allStars,
+			initialBoxScore,
+			teamSeasonOverrides?.[i],
+		);
 		t.ptsQtrs = [];
 
 		for (const stat of resetStatsTeam) {
@@ -137,10 +150,10 @@ export const boxScoreToLiveSim = async ({
 			}
 		}
 	}
-	makeAbbrevsUnique(boxScore.teams);
+	makeAbbrevsUnique(initialBoxScore.teams);
 
 	// Swap teams order, so home team is at bottom in box score
-	boxScore.teams.reverse();
+	initialBoxScore.teams.reverse();
 
 	// For FBGM, build up scoringSummary from events, to handle deleting a score due to penalty
 	if (
@@ -151,18 +164,18 @@ export const boxScoreToLiveSim = async ({
 			hockey: true,
 		})
 	) {
-		boxScore.scoringSummary = [];
+		initialBoxScore.scoringSummary = [];
 	}
 
 	if (STARTING_NUM_TIMEOUTS !== undefined) {
-		boxScore.teams[0].timeouts = STARTING_NUM_TIMEOUTS;
-		boxScore.teams[1].timeouts = STARTING_NUM_TIMEOUTS;
+		initialBoxScore.teams[0].timeouts = STARTING_NUM_TIMEOUTS;
+		initialBoxScore.teams[1].timeouts = STARTING_NUM_TIMEOUTS;
 	}
 
 	return {
 		confetti,
 		events: playByPlay,
-		initialBoxScore: boxScore,
+		initialBoxScore,
 		otl,
 		quarterLength: g.get("quarterLength"),
 	};
@@ -185,9 +198,11 @@ const updatePlayByPlay = async (
 		inputs.playByPlay !== undefined &&
 		inputs.playByPlay.length > 0
 	) {
-		const boxScore: any = helpers.deepCopy(
-			await idb.cache.games.get(inputs.gid),
-		);
+		const boxScore = await idb.getCopy.games({ gid: inputs.gid });
+
+		if (!boxScore) {
+			throw new Error("Invalid gid");
+		}
 
 		const allStarGame =
 			boxScore.teams[0].tid === -1 || boxScore.teams[1].tid === -1;
@@ -202,7 +217,11 @@ const updatePlayByPlay = async (
 		}
 
 		let confetti = false;
-		if (boxScore.playoffs && g.get("phase") >= PHASE.PLAYOFFS) {
+		if (
+			boxScore.playoffs &&
+			boxScore.numGamesToWinSeries !== undefined &&
+			g.get("phase") >= PHASE.PLAYOFFS
+		) {
 			const playoffSeries = await idb.cache.playoffSeries.get(g.get("season"));
 			if (playoffSeries) {
 				const finalRound = playoffSeries.series.at(-1);

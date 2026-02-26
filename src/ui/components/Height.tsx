@@ -1,7 +1,5 @@
 import { local, useLocal } from "../util/index.ts";
 
-import type { JSX } from "react";
-
 export const getHeightString = (inches: number, units: "metric" | "us") => {
 	if (units === "metric") {
 		return `${Math.round(inches * 2.54)} cm`;
@@ -13,7 +11,7 @@ export const getHeightString = (inches: number, units: "metric" | "us") => {
 const Height = ({ inches }: { inches: number }) => {
 	const units = useLocal((state2) => state2.units);
 
-	return getHeightString(inches, units) as unknown as JSX.Element;
+	return getHeightString(inches, units);
 };
 
 export default Height;

@@ -19,9 +19,8 @@ export const exportPlayers = async (
 		return;
 	}
 
-	const { downloadFileStream, makeExportStream } = await import(
-		"../util/exportLeague.ts"
-	);
+	const { downloadFileStream, makeExportStream } =
+		await import("../util/exportLeague.ts");
 
 	if (abortSignal?.aborted) {
 		return;
@@ -33,7 +32,7 @@ export const exportPlayers = async (
 			players: (p) => seasonsByPid.has(p.pid),
 		},
 		forEach: {
-			players: (p) => {
+			players: (p: any) => {
 				p.exportedSeason = seasonsByPid.get(p.pid);
 				if (p.exportedSeason === "latest") {
 					p.exportedSeason = p.ratings.at(-1).season;

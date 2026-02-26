@@ -168,7 +168,7 @@ const aplLF = (i: 6 | 7 | 8, league: any) => {
 const calculateWAR = (players: any[], teams: Team[], league: any) => {
 	const rbat = []; // Batting Runs
 	const rbr = []; // Baserunning Runs
-	const rfld = []; // Fielding Runs
+	const rfld: number[][] = []; // Fielding Runs
 	const rpos = []; // Positional Adjustment Runs
 	const rpit = []; // Pitching Runs Saved
 	const raa = []; // Runs Above Average
@@ -234,7 +234,7 @@ const calculateWAR = (players: any[], teams: Team[], league: any) => {
 	// For playoffs would be better to be team specific, but this is better than just using numGames directly, which is what it used to do!
 	const numGames =
 		g.get("phase") === PHASE.PLAYOFFS
-			? g.get("numGamesPlayoffSeries").reduce((prev, curr) => prev + curr, 0)
+			? helpers.sum(g.get("numGamesPlayoffSeries"))
 			: g.get("numGames");
 
 	for (let i = 0; i < players.length; i++) {
@@ -254,7 +254,7 @@ const calculateWAR = (players: any[], teams: Team[], league: any) => {
 		// Baserunning Runs
 		rbr[i] = 0.3 * p.stats.sb - 0.6 * p.stats.cs;
 
-		rfld[i] = [] as number[];
+		rfld[i] = [];
 		rpos[i] = 0;
 		for (let j = 0; j < p.stats.gpF.length; j++) {
 			const gpF = p.stats.gpF[j];

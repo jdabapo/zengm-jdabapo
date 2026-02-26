@@ -1,7 +1,5 @@
 import { local, useLocal } from "../util/index.ts";
 
-import type { JSX } from "react";
-
 const getWeightString = (pounds: number, units: "metric" | "us") => {
 	if (typeof pounds !== "number") {
 		return null;
@@ -17,7 +15,7 @@ const getWeightString = (pounds: number, units: "metric" | "us") => {
 const Weight = ({ pounds }: { pounds: number }) => {
 	const units = useLocal((state2) => state2.units);
 
-	return getWeightString(pounds, units) as unknown as JSX.Element;
+	return getWeightString(pounds, units);
 };
 
 export default Weight;

@@ -1,4 +1,4 @@
-import type { JSX, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { helpers } from "../../util/index.ts";
 
 export const SeasonLink = ({
@@ -37,5 +37,5 @@ export const MaybeBold = ({
 		return <span className="highlight-leader">{children}</span>;
 	}
 
-	return children as JSX.Element;
+	return children;
 };

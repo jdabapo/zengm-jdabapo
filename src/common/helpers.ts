@@ -1240,7 +1240,9 @@ const getCountry = (bornLoc?: string) => {
 const getJerseyNumber = (
 	p: {
 		jerseyNumber?: string;
-		stats: any[];
+		stats: {
+			jerseyNumber?: string;
+		}[];
 	},
 	type: "mostCommon" | "current" = "current",
 ): string | undefined => {
@@ -1251,8 +1253,9 @@ const getJerseyNumber = (
 		}
 
 		// This used to be the primary source of truth, but is now just historical data. Use it for players from before p.jerseyNumber was mandatory
-		if (p.stats.length > 0) {
-			return p.stats.at(-1).jerseyNumber;
+		const lastStats = p.stats.at(-1);
+		if (lastStats) {
+			return lastStats.jerseyNumber;
 		}
 
 		// None found? Return undefind. This happens for players who have never been on a team during the season

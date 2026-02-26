@@ -198,6 +198,9 @@ importers:
       '@types/d3-scale':
         specifier: 4.0.9
         version: 4.0.9
+      '@types/google-publisher-tag':
+        specifier: ^1.20260216.0
+        version: 1.20260216.0
       '@types/gtag.js':
         specifier: 0.0.20
         version: 0.0.20
@@ -1644,6 +1647,9 @@ packages:
 
   '@types/geojson@7946.0.16':
     resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
+
+  '@types/google-publisher-tag@1.20260216.0':
+    resolution: {integrity: sha512-2PadhfZW8V6xqQ9WUFYDk0P6Ft0K2urHNN9RZ52cz95g3fU+uwE+bMy5c1tJDVZxcUO/lOFqYNFpeFVQQbnESQ==}
 
   '@types/gtag.js@0.0.20':
     resolution: {integrity: sha512-wwAbk3SA2QeU67unN7zPxjEHmPmlXwZXZvQEpbEUQuMCRGgKyE1m6XDuTUA9b6pCGb/GqJmdfMOY5LuDjJSbbg==}
@@ -6147,6 +6153,8 @@ snapshots:
   '@types/gensync@1.0.4': {}
 
   '@types/geojson@7946.0.16': {}
+
+  '@types/google-publisher-tag@1.20260216.0': {}
 
   '@types/gtag.js@0.0.20': {}
 

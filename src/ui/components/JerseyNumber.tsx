@@ -3,8 +3,8 @@ import { useRef } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { DEFAULT_TEAM_COLORS } from "../../common/index.ts";
 
-const getValidTeamColors = (t?: { colors: any }) => {
-	const colors = [...DEFAULT_TEAM_COLORS];
+const getValidTeamColors = (t?: { colors: unknown }) => {
+	const colors: [string, string, string] = [...DEFAULT_TEAM_COLORS];
 	if (t && t.colors && Array.isArray(t.colors)) {
 		for (let i = 0; i < 3; i++) {
 			if (typeof t.colors[i] === "string") {
@@ -12,7 +12,7 @@ const getValidTeamColors = (t?: { colors: any }) => {
 			}
 		}
 	}
-	return colors as [string, string, string];
+	return colors;
 };
 
 const JerseyNumber = ({
