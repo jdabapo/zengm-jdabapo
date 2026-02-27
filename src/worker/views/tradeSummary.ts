@@ -74,14 +74,24 @@ const findStatSum = (
 	// If no data was deleted/edited, should work with just statsIndex
 	const firstTry = allStats[index];
 	if (firstTry === undefined || firstTry.season !== season) {
-		// Something's wrong! Look for first stats entry that is after the trade
-		index = allStats.findIndex((row) => {
+		// Something's wrong! Look for first stats entry that is after the trade. If we can't find it, that means probably the stats row for after the trade hasn't been created yet, in which case we keep index as is and it will never meet the condition below for "after the trade".
+		// This may result in a false positive immediately after the trade (no stats row added yet) for a player traded back to the same team, but I guess that is worth working better with incomplete data?
+		const altIndex = allStats.findIndex((row) => {
 			return (
 				row.season > season ||
-				(row.season === season && !row.playoffs && phase < PHASE.PLAYOFFS) ||
-				(row.season === season && row.playoffs && phase <= PHASE.PLAYOFFS)
+				(row.season === season &&
+					!row.playoffs &&
+					phase < PHASE.PLAYOFFS &&
+					row.tid === tid) ||
+				(row.season === season &&
+					row.playoffs &&
+					phase <= PHASE.PLAYOFFS &&
+					row.tid === tid)
 			);
 		});
+		if (altIndex >= 0) {
+			index = altIndex;
+		}
 	}
 
 	let statSum = 0;

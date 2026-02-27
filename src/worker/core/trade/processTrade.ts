@@ -127,7 +127,7 @@ const processTrade = async (
 				name: `${p.firstName} ${p.lastName}`,
 				contract: p.contract,
 				ratingsIndex: p.ratings.length - 1,
-				statsIndex: p.stats.length - (duringSeason ? 0 : 1), // Used to always have 1 subtracted from it until addStatsRow was removed
+				statsIndex: p.stats.length - (duringSeason ? 0 : 1), // Used to always have 1 subtracted from it until addStatsRow was removed. This is kind of weird - statsIndex references the first stats row for the new team for trades before the playoffs end, and the last stats row for the old team for trades after the playoffs. This logic is kept just to maintain backwards compatibility, it's handled in tradeSummary.ts too.
 			});
 
 			if (teamSeason) {
