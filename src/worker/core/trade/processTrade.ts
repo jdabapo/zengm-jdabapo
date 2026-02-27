@@ -76,13 +76,15 @@ const processTrade = async (
 			throw new Error("Invalid pid");
 		}
 
+		const duringSeason = g.get("phase") <= PHASE.PLAYOFFS;
+
 		for (const p of players) {
 			p.tid = tids[k];
 
 			// p.gamesUntilTradable = 14; // Don't make traded players untradable
 			p.ptModifier = 1; // Reset
 
-			if (g.get("phase") <= PHASE.PLAYOFFS) {
+			if (duringSeason) {
 				// If two players being traded for each other have the same jersey number, that shouldn't be treated as conflict and they should be able to keep their jersey numbers - that's what the pids[k] part does.
 				// Recompute this for every player, otherwise two incoming players could pick the same jersey number.
 				const teamJerseyNumbers = await getTeammateJerseyNumbers(p.tid, [
@@ -125,7 +127,7 @@ const processTrade = async (
 				name: `${p.firstName} ${p.lastName}`,
 				contract: p.contract,
 				ratingsIndex: p.ratings.length - 1,
-				statsIndex: p.stats.length, // Used to have 1 subtracted from it until addStatsRow was removed
+				statsIndex: p.stats.length - (duringSeason ? 0 : 1), // Used to always have 1 subtracted from it until addStatsRow was removed
 			});
 
 			if (teamSeason) {
