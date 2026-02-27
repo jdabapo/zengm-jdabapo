@@ -2284,11 +2284,17 @@ class GameSim extends GameSimBase {
 		} else {
 			throw new Error(`Should never happen ${type}`);
 		}
+		if (passer !== undefined) {
+			this.recordStat(this.o, passer, "ast");
+		}
+
 		const baseLogInformation = {
 			t: this.o,
 			pid,
 			clock: this.t,
+			pidFoul: fouler?.id,
 		};
+
 		// assign correct log events
 		if (fgMakeLogType === "fgPutBackAndOne" || fgMakeLogType === "fgPutBack") {
 			this.playByPlay.logEvent({
@@ -2317,10 +2323,6 @@ class GameSim extends GameSimBase {
 			});
 		}
 		this.recordLastScore(this.o, p, type);
-
-		if (passer !== undefined) {
-			this.recordStat(this.o, passer, "ast");
-		}
 
 		if (andOne && !this.elamDone) {
 			this.doPf({ t: this.d, type: "pfAndOne", shooter: p, fouler });
@@ -2652,22 +2654,26 @@ class GameSim extends GameSimBase {
 		const t = info.t;
 		const p = info.fouler ?? this.pickPlayer("fouling", t, 1);
 		this.recordStat(t, p, "pf");
-		const baseLogInformation = {
-			t,
-			pid: p.id,
-			clock: this.t,
-		};
-		if (info.type === "pfNonShooting" || info.type === "pfAndOne") {
-			this.playByPlay.logEvent({
-				...baseLogInformation,
-				type: info.type,
-			});
-		} else {
-			this.playByPlay.logEvent({
-				...baseLogInformation,
-				type: info.type,
-				pidShooting: info.shooter.id,
-			});
+
+		// pfAndOne is handled in the shot event
+		if (info.type !== "pfAndOne") {
+			const baseLogInformation = {
+				t,
+				pid: p.id,
+				clock: this.t,
+			};
+			if (info.type === "pfNonShooting") {
+				this.playByPlay.logEvent({
+					...baseLogInformation,
+					type: info.type,
+				});
+			} else {
+				this.playByPlay.logEvent({
+					...baseLogInformation,
+					type: info.type,
+					pidShooting: info.shooter.id,
+				});
+			}
 		}
 
 		// Foul out

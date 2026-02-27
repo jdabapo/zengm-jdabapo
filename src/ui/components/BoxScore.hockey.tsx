@@ -295,11 +295,23 @@ const ScoringSummary = ({
 										? "Rebound shot"
 										: helpers.upperCaseFirstLetter(event.shotType)}{" "}
 									by {event.names[0]}
-									{event.names.length > 1 ? (
+									{event.type === "goal" && event.totalGA
+										? ` (${event.totalGA[0]})`
+										: ""}
+									{event.type === "goal" && event.names.length > 1 ? (
 										<>
 											{" "}
 											<span className="text-body-secondary">
-												(assist: {event.names.slice(1).join(", ")})
+												{" "}
+												assisted by {event.names[1]}
+												{event.totalGA ? ` (${event.totalGA[1]})` : ""}
+												{event.names.length > 2 ? (
+													<>
+														{" "}
+														and {event.names[2]}
+														{event.totalGA ? ` (${event.totalGA[2]})` : ""}
+													</>
+												) : null}
 											</span>
 										</>
 									) : null}

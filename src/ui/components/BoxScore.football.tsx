@@ -236,6 +236,8 @@ const StatsTable = ({
 	);
 };
 
+const MissSymbol = () => <span className="text-danger">✕ </span>;
+
 // Condenses TD + XP/2P into one event rather than two, and normalizes scoring summary events into consistent format (old style format had the text in it already, new one is just raw metadata from game sim)
 const processEvents = (events: PlayByPlayEventScore[], numPeriods: number) => {
 	const processedEvents: {
@@ -287,17 +289,23 @@ const processEvents = (events: PlayByPlayEventScore[], numPeriods: number) => {
 				score[event.t] += pts;
 			}
 
-			const prevEvent: any = processedEvents.at(-1);
+			const prevEvent = processedEvents.at(-1);
 
 			if (
 				prevEvent &&
 				(scoreInfo.type === "XP" ||
 					(scoreInfo.type === "2P" && event.t === prevEvent.t))
 			) {
-				prevEvent.score = score.slice();
+				prevEvent.score = [score[0], score[1]];
+				console.log(prevEvent, event, pts);
 				prevEvent.text = (
 					<>
-						{prevEvent.text} ({text})
+						{prevEvent.text}
+						<br />
+						<span className="text-body-secondary">
+							{pts === 0 ? <MissSymbol /> : null}
+							{text}
+						</span>
 					</>
 				);
 			} else {
@@ -345,7 +353,7 @@ const ScoringSummary = memo(
 		}
 
 		return (
-			<table className="table table-sm border-bottom">
+			<table className="table table-sm border-bottom align-top-all">
 				<tbody>
 					{processedEvents.map((event, i) => {
 						let quarterHeader: ReactNode = null;
@@ -413,7 +421,10 @@ const ScoringSummary = memo(
 										})}
 									</td>
 									<td>{currentQuarter !== "SH" ? event.time : null}</td>
-									<td style={{ whiteSpace: "normal" }}>{event.text}</td>
+									<td style={{ whiteSpace: "normal" }}>
+										{event.noPoints ? <MissSymbol /> : null}
+										{event.text}
+									</td>
 								</tr>
 							</Fragment>
 						);

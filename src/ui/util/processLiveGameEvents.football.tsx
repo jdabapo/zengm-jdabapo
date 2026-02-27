@@ -1,10 +1,32 @@
 import { getPeriodName } from "../../common/index.ts";
 import { formatScoringSummaryEvent } from "../../common/formatScoringSummaryEvent.football.ts";
 import { helpers, local } from "./index.ts";
-import type { PlayByPlayEvent } from "../../worker/core/GameSim.football/PlayByPlayLogger.ts";
+import type {
+	PlayByPlayEvent,
+	PlayByPlayEventScore,
+} from "../../worker/core/GameSim.football/PlayByPlayLogger.ts";
 import type { ReactNode } from "react";
 import { formatClock } from "../../common/formatClock.ts";
-
+import type { PlayerInjury } from "../../common/types.ts";
+import { formatLiveGameStat } from "./formatLiveGameStat.ts";
+type BoxScorePlayer = {
+	name: string;
+	pid: number;
+	injury: PlayerInjury;
+	seasonStats: {
+		[stat: string]: number;
+	};
+	inGame: boolean;
+};
+type BoxScoreTeam = {
+	abbrev: string;
+	players: BoxScorePlayer[];
+	ptsQtrs: number[];
+	sAtt?: number;
+	sPts?: number;
+	timeouts: number;
+	[key: string]: string | number | BoxScorePlayer[] | number[] | undefined;
+};
 let playersByPidGid: number | undefined;
 let playersByPid:
 	| Record<
@@ -12,10 +34,10 @@ let playersByPid:
 			{
 				name: string;
 				inGame: boolean;
+				seasonStats: { [stat: string]: number };
 			}
 	  >
 	| undefined;
-
 export type SportState = {
 	awaitingAfterTouchdown: boolean;
 	awaitingKickoff: boolean;
@@ -189,15 +211,27 @@ export const formatDownAndDistance = (
 const descriptionYdsTD = (
 	yds: number,
 	td: boolean,
+	twoPointConversion: boolean,
 	touchdownText: string,
 	showYdsOnTD: boolean,
+	seasonTouchdownStats: [number] | [number, number] | undefined, // undefined means old box score without this data
 ) => {
+	const tdStats = () => {
+		if (twoPointConversion || !seasonTouchdownStats) {
+			return "";
+		}
+		if (seasonTouchdownStats.length === 1) {
+			return formatLiveGameStat(seasonTouchdownStats[0], "RusTD", true);
+		} else if (seasonTouchdownStats.length === 2) {
+			return formatLiveGameStat(seasonTouchdownStats, ["PssTD", "RecTD"], true);
+		}
+	};
 	if (td && showYdsOnTD) {
-		return `${yds} yards${td ? ` and ${touchdownText}!` : ""}`;
+		return `${yds} yards${td ? ` and ${touchdownText}!${tdStats()}` : ""}`;
 	}
 
 	if (td) {
-		return `${touchdownText}!`;
+		return `${touchdownText}!${tdStats()}`;
 	}
 
 	return `${yds} yards`;
@@ -242,7 +276,9 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 		}`;
 	} else if (event.type === "kickoffReturn") {
 		text = `${event.names[0]} returned the kickoff ${event.yds} yards${
-			event.td ? " for a touchdown!" : ""
+			event.td
+				? ` for a touchdown!${formatLiveGameStat(event.totalKrTD, "KrTD", true)}`
+				: ""
 		}`;
 	} else if (event.type === "onsideKick") {
 		text = `${event.names[0]} gets ready to attempt an onside kick`;
@@ -264,7 +300,9 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 		}`;
 	} else if (event.type === "puntReturn") {
 		text = `${event.names[0]} returned the punt ${event.yds} yards${
-			event.td ? " for a touchdown!" : ""
+			event.td
+				? ` for a touchdown!${formatLiveGameStat(event.totalPrTD, "PrTD", true)}`
+				: ""
 		}`;
 	} else if (event.type === "extraPoint") {
 		text = `${event.names[0]} ${
@@ -275,7 +313,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 			event.yds
 		} yard field goal`;
 	} else if (event.type === "fumble") {
-		text = `${event.names[0]} fumbled the ball!`;
+		text = `${event.names[0]} fumbled the ball${formatLiveGameStat(event.totalFmb, "Fmb", true)}! Forced fumble by ${event.names[1]}${formatLiveGameStat(event.totalDefFmbFrc, "FmbFrc", true)}`;
 	} else if (event.type === "fumbleRecovery") {
 		if (event.safety || event.touchback) {
 			text = (
@@ -310,7 +348,14 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 		}
 	} else if (event.type === "interception") {
 		text = (
-			<span className="text-danger">Intercepted by {event.names[0]}!</span>
+			<>
+				<span className="text-danger">Intercepted by {event.names[0]}!</span>
+				{formatLiveGameStat(
+					[event.totalPssInt, event.totalDefInt],
+					["PssInt", "DefInt"],
+					true,
+				)}
+			</>
 		);
 	} else if (event.type === "interceptionReturn") {
 		text = `${event.names[0]} `;
@@ -324,7 +369,7 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 	} else if (event.type === "sack") {
 		text = `${event.names[0]} was sacked by ${event.names[1]} for a ${
 			event.safety ? "safety!" : `${Math.abs(event.yds)} yard loss`
-		}`;
+		}${formatLiveGameStat(event.totalDefSk, "DefSk", true)}`;
 	} else if (event.type === "dropback") {
 		text = `${event.names[0]} drops back to pass`;
 	} else if (event.type === "passComplete") {
@@ -339,8 +384,12 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 			const result = descriptionYdsTD(
 				event.yds,
 				event.td,
+				event.twoPointConversionTeam !== undefined,
 				touchdownText,
 				showYdsOnTD,
+				event.totalPssTD !== undefined && event.totalRecTD !== undefined
+					? [event.totalPssTD, event.totalRecTD]
+					: undefined,
 			);
 			text = `${event.names[0]} completed a pass to ${event.names[1]} for ${result}`;
 		}
@@ -358,8 +407,10 @@ export const getText = (event: PlayByPlayEvent, numPeriods: number) => {
 			const result = descriptionYdsTD(
 				event.yds,
 				event.td,
+				event.twoPointConversionTeam !== undefined,
 				touchdownText,
 				showYdsOnTD,
+				event.totalRusTD !== undefined ? [event.totalRusTD] : undefined,
 			);
 			text = `${event.names[0]} rushed for ${result}`;
 		}
@@ -472,7 +523,18 @@ const processLiveGameEvents = ({
 	sportState,
 }: {
 	events: PlayByPlayEvent[];
-	boxScore: any;
+	boxScore: {
+		gid: number;
+		quarter: string;
+		quarterShort: string;
+		numPeriods: number;
+		overtime?: string;
+		possession: 0 | 1 | undefined;
+		shootout?: boolean;
+		teams: [BoxScoreTeam, BoxScoreTeam];
+		time: string;
+		scoringSummary: PlayByPlayEventScore[];
+	};
 	overtimes: number;
 	quarters: string[];
 	sportState: SportState;
@@ -736,8 +798,9 @@ const processLiveGameEvents = ({
 		} else if (e.type === "stat") {
 			// Quarter-by-quarter score
 			if (e.s === "pts") {
-				const ptsQtrs = boxScore.teams[actualT!].ptsQtrs;
-				ptsQtrs[ptsQtrs.length - 1] += e.amt;
+				const { ptsQtrs } = boxScore.teams[actualT!];
+				// eslint-disable-next-line unicorn/prefer-at
+				ptsQtrs[ptsQtrs.length - 1]! += e.amt;
 				boxScore.teams[actualT!].ptsQtrs = ptsQtrs;
 			}
 
@@ -751,7 +814,9 @@ const processLiveGameEvents = ({
 						p[e.s] += e.amt;
 					}
 				}
-				boxScore.teams[actualT!][e.s] += e.amt;
+				let stat = boxScore.teams[actualT!][e.s] as number;
+				stat += e.amt;
+				boxScore.teams[actualT!][e.s] = stat;
 			}
 		} else if (e.type === "removeLastScore") {
 			// This happens a tick after sportState is updated, which I think is okay

@@ -72,7 +72,7 @@ class GameSim extends GameSimBase {
 		doPlayByPlay,
 		homeCourtFactor,
 		dh,
-		allStarGame = false,
+		allStarGame,
 		baseInjuryRate,
 		neutralSite,
 	}: {
@@ -1018,7 +1018,6 @@ class GameSim extends GameSimBase {
 				this.recordStat(this.o, p, "sb");
 				this.recordStat(this.d, catcher, "sbF");
 			}
-
 			this.playByPlay.logEvent({
 				type: "stealEnd",
 				pid: p!.id,
@@ -1027,6 +1026,7 @@ class GameSim extends GameSimBase {
 				throw: throwAt === i,
 				outAtNextBase: false,
 				...this.getSportState(),
+				totalSb: this.allStarGame ? undefined : p.seasonStats.sb + p.stat["sb"],
 			});
 		}
 	}
@@ -1880,7 +1880,6 @@ class GameSim extends GameSimBase {
 					if (numBases < 4) {
 						this.bases[numBases - 1] = this.makeOccupiedBase(batter, true);
 					}
-
 					this.playByPlay.logEvent({
 						type: "hitResult",
 						result: "error",
@@ -1916,6 +1915,19 @@ class GameSim extends GameSimBase {
 							);
 						}
 					}
+					const getHitType = (numBases: 1 | 2 | 3 | 4) => {
+						switch (numBases) {
+							case 1:
+								return "h";
+							case 2:
+								return "2b";
+							case 3:
+								return "3b";
+							case 4:
+								return "hr";
+						}
+					};
+					const hitType = getHitType(numBases);
 
 					this.playByPlay.logEvent({
 						type: "hitResult",
@@ -1927,6 +1939,9 @@ class GameSim extends GameSimBase {
 						numBases,
 						outAtNextBase: false,
 						...this.getSportState(),
+						totalHits: this.allStarGame
+							? undefined
+							: batter.stat[hitType] + batter.seasonStats[hitType],
 					});
 				}
 
@@ -2725,7 +2740,6 @@ class GameSim extends GameSimBase {
 		type?: "fielding",
 	) {
 		const qtr = this.team[t].t.stat.ptsQtrs.length - 1;
-
 		if (p !== undefined) {
 			if (type === "fielding") {
 				const pos = this.team[t].playersInGame[p.id]!.pos;

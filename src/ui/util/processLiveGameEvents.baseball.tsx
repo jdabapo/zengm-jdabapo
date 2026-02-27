@@ -10,11 +10,15 @@ import {
 } from "../../common/constants.baseball.ts";
 import type { PlayerInjury } from "../../common/types.ts";
 import { formatScoringSummaryEvent } from "../../common/formatScoringSummaryEvent.baseball.ts";
+import { formatLiveGameStat } from "./formatLiveGameStat.ts";
 
 export type BoxScorePlayer = {
 	name: string;
 	pid: number;
 	injury: PlayerInjury;
+	seasonStats: {
+		[stat: string]: number;
+	};
 };
 type BoxScoreTeam = {
 	abbrev: string;
@@ -144,11 +148,11 @@ const formatRunners = (
 export const getText = (
 	event: PlayByPlayEvent,
 	getName: (pid: number) => string,
+	sportState: SportState | undefined,
 ) => {
 	let text;
 
 	let bold = false;
-
 	switch (event.type) {
 		case "sideStart": {
 			text = `${event.t === 0 ? "Bottom" : "Top"} of the ${helpers.ordinal(
@@ -186,9 +190,12 @@ export const getText = (
 			break;
 		}
 		case "strikeOut": {
+			const statTotal = sportState
+				? formatLiveGameStat(playersByPid[sportState.pitcherPid], "soPit")
+				: "";
 			text = event.swinging
-				? `${helpers.pronoun(local.getState().gender, "He")} goes down swinging`
-				: "Called strike three";
+				? `${helpers.pronoun(local.getState().gender, "He")} goes down swinging${statTotal}`
+				: `Called strike three ${statTotal}`;
 			bold = true;
 			break;
 		}
@@ -284,7 +291,6 @@ export const getText = (
 		}
 		case "hitResult": {
 			const sideRetired = event.outs === NUM_OUTS_PER_INNING;
-
 			text = "";
 			if (event.result === "error") {
 				text = `${helpers.pronoun(
@@ -295,15 +301,15 @@ export const getText = (
 				)}!`;
 			} else if (event.result === "hit") {
 				if (event.numBases === 1) {
-					text = "Single!";
+					text = "Single";
 				} else if (event.numBases === 2) {
-					text = "Double!";
+					text = `Double${event.totalHits !== undefined ? ` (${event.totalHits})` : ""}`;
 				} else if (event.numBases === 3) {
-					text = "Triple!";
+					text = `Triple${event.totalHits !== undefined ? ` (${event.totalHits})` : ""}`;
 				} else if (event.runners.length === 3) {
-					text = "Grand slam!";
+					text = `Grand slam${formatLiveGameStat(event.totalHits, "hr")}`;
 				} else {
-					text = "Home run!";
+					text = `Home run${event.totalHits !== undefined ? ` (${event.totalHits})` : ""}`;
 				}
 			} else if (event.result === "flyOut") {
 				text = `Caught by the ${
@@ -384,11 +390,11 @@ export const getText = (
 			} else if (event.throw) {
 				text = `${getName(
 					event.pid,
-				)} beats the throw and is safe at ${getBaseName(event.to)}`;
+				)} beats the throw and is safe at ${getBaseName(event.to)}${formatLiveGameStat(event.totalSb, "sb")}`;
 			} else {
 				text = `${getName(event.pid)} steals ${getBaseName(
 					event.to,
-				)} with no throw`;
+				)} with no throw${formatLiveGameStat(event.totalSb, "sb")}`;
 			}
 			bold = true;
 			break;
@@ -662,7 +668,7 @@ const processLiveGameEvents = ({
 				}
 			}
 
-			const output = getText(e, getName);
+			const output = getText(e, getName, sportState);
 			text = output.bold ? <b>{output.text}</b> : output.text;
 			textOnly =
 				e.type === "sideStart" ||

@@ -93,6 +93,7 @@ export type PlayByPlayEventInput =
 			outAtNextBase: boolean; // For if the runner was thrown out when trying to advance one more base
 			outs: number;
 			bases: [number | undefined, number | undefined, number | undefined];
+			totalHits: number | undefined; // undefined in ASG or old box scores
 	  }
 	| {
 			type: "hitResult";
@@ -140,6 +141,7 @@ export type PlayByPlayEventInput =
 			outAtNextBase: boolean; // For if the runner was thrown out when trying to advance one more base
 			outs: number;
 			bases: [number | undefined, number | undefined, number | undefined];
+			totalSb: number | undefined; // undefined in ASG or old box scores
 	  }
 	| {
 			type: "balk" | "wildPitch" | "passedBall";

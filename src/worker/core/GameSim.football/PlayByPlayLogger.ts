@@ -10,6 +10,7 @@ export type PlayByPlayEventInputScore =
 			t: TeamNum;
 			td: boolean;
 			yds: number;
+			totalKrTD: number | undefined;
 	  }
 	| {
 			type: "puntReturn";
@@ -18,6 +19,7 @@ export type PlayByPlayEventInputScore =
 			t: TeamNum;
 			td: boolean;
 			yds: number;
+			totalPrTD: number | undefined;
 	  }
 	| {
 			type: "fumbleRecovery";
@@ -36,6 +38,8 @@ export type PlayByPlayEventInputScore =
 			type: "interception";
 			clock: number;
 			names: string[];
+			totalPssInt: number | undefined;
+			totalDefInt: number | undefined;
 			t: TeamNum;
 			twoPointConversionTeam: TeamNum | undefined;
 			yds: number;
@@ -54,6 +58,8 @@ export type PlayByPlayEventInputScore =
 			type: "passComplete";
 			clock: number;
 			names: string[];
+			totalPssTD: number | undefined;
+			totalRecTD: number | undefined;
 			safety: boolean;
 			t: TeamNum;
 			td: boolean;
@@ -64,6 +70,7 @@ export type PlayByPlayEventInputScore =
 			type: "run";
 			clock: number;
 			names: string[];
+			totalRusTD: number | undefined;
 			safety: boolean;
 			t: TeamNum;
 			td: boolean;
@@ -97,6 +104,7 @@ export type PlayByPlayEventInputScore =
 			type: "sack";
 			clock: number;
 			names: string[];
+			totalDefSk: number | undefined;
 			safety: boolean;
 			t: TeamNum;
 			yds: number;
@@ -161,6 +169,8 @@ export type PlayByPlayEventInput =
 			type: "fumble";
 			clock: number;
 			names: string[];
+			totalFmb: number | undefined;
+			totalDefFmbFrc: number | undefined;
 			t: TeamNum;
 	  }
 	| {

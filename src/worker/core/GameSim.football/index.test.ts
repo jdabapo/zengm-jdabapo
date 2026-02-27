@@ -36,6 +36,7 @@ export const initGameSim = async () => {
 		baseInjuryRate: g.get("injuryRate"),
 		doPlayByPlay: false,
 		homeCourtFactor: 1,
+		allStarGame: false,
 		neutralSite: false,
 	});
 };
