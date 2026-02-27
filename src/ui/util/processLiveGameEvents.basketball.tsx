@@ -335,13 +335,15 @@ export const getText = (
 		}
 
 		if (eAny.pidFoul !== undefined) {
+			// Hack! eed to add 1 because the pf stat is not logged until after this event, and it's tricky to fix that
+			const pf = (playersByPid[eAny.pidFoul]!.pf as number) + 1;
 			text = (
 				<>
 					{text}
 					<br />
 					<span className="text-body-secondary">
 						Foul on {getName(eAny.pidFoul)}
-						{formatLiveGameStat(playersByPid[eAny.pidFoul], "pf")}
+						{formatLiveGameStat(pf, "pf")}
 					</span>
 				</>
 			);
