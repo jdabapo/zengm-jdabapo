@@ -1,7 +1,11 @@
 import type { POS_NUMBERS_INVERSE } from "../../../common/constants.baseball.ts";
 import { formatScoringSummaryEvent } from "../../../common/formatScoringSummaryEvent.baseball.ts";
 import type { TeamNum } from "../../../common/types.ts";
-import { PlayByPlayLoggerBase } from "../GameSim/PlayByPlayLoggerBase.ts";
+import {
+	PlayByPlayLoggerBase,
+	type PlayByPlayEventStat,
+	type PlayByPlayEventInit,
+} from "../GameSim/PlayByPlayLoggerBase.ts";
 import type { Runner } from "./types.ts";
 
 export type PlayByPlayEventInput =
@@ -180,7 +184,10 @@ export type PlayByPlayEventInput =
 			type: "shootoutTie";
 	  };
 
-export type PlayByPlayEvent = PlayByPlayEventInput;
+export type PlayByPlayEvent =
+	| PlayByPlayEventInput
+	| PlayByPlayEventStat
+	| PlayByPlayEventInit;
 
 export type PlayByPlayEventScore = PlayByPlayEvent & {
 	inning: number;

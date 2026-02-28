@@ -1,6 +1,10 @@
 import { formatScoringSummaryEvent } from "../../../common/formatScoringSummaryEvent.football.ts";
 import type { TeamNum } from "../../../common/types.ts";
-import { PlayByPlayLoggerBase } from "../GameSim/PlayByPlayLoggerBase.ts";
+import {
+	PlayByPlayLoggerBase,
+	type PlayByPlayEventStat,
+	type PlayByPlayEventInit,
+} from "../GameSim/PlayByPlayLoggerBase.ts";
 
 export type PlayByPlayEventInputScore =
 	| {
@@ -281,6 +285,8 @@ export type PlayByPlayEventInput =
 
 export type PlayByPlayEvent =
 	| PlayByPlayEventInput
+	| PlayByPlayEventStat
+	| PlayByPlayEventInit
 	| {
 			type: "removeLastScore";
 	  }
