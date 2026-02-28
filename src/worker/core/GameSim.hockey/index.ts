@@ -20,7 +20,7 @@ import GameSimBase from "../../core/GameSim/GameSimBase.ts";
 import { orderBy, range } from "../../../common/utils.ts";
 import { getStartingAndBackupGoalies } from "./getStartingAndBackupGoalies.ts";
 import type { TeamNum } from "../../../common/types.ts";
-import HockeyPlayByPlayLogger from "./PlayByPlayLogger.ts";
+import PlayByPlayLogger from "./PlayByPlayLogger.ts";
 
 const teamNums: [TeamNum, TeamNum] = [0, 1];
 
@@ -66,7 +66,7 @@ class GameSim extends GameSimBase {
 
 	d: TeamNum;
 
-	playByPlay: HockeyPlayByPlayLogger;
+	playByPlay: PlayByPlayLogger;
 
 	minutesSinceLineChange: [
 		{
@@ -117,7 +117,7 @@ class GameSim extends GameSimBase {
 			neutralSite,
 		});
 
-		this.playByPlay = new HockeyPlayByPlayLogger(doPlayByPlay);
+		this.playByPlay = new PlayByPlayLogger(doPlayByPlay);
 		this.team = teams; // If a team plays twice in a day, this needs to be a deep copy
 
 		this.synergyFactor = 1;

@@ -17,7 +17,7 @@ import {
 } from "./PlayByPlayLogger.ts";
 import getWinner from "../../../common/getWinner.ts";
 import { formatClock } from "../../../common/formatClock.ts";
-import BasketballPlayByPlayLogger from "./PlayByPlayLogger.ts";
+import PlayByPlayLogger from "./PlayByPlayLogger.ts";
 
 const SHOT_CLOCK = 24;
 // const NUM_TIMEOUTS_MAX_FINAL_PERIOD = 4;
@@ -181,7 +181,7 @@ class GameSim extends GameSimBase {
 
 	d: TeamNum;
 
-	playByPlay: BasketballPlayByPlayLogger;
+	playByPlay: PlayByPlayLogger;
 
 	elam: boolean;
 
@@ -237,7 +237,7 @@ class GameSim extends GameSimBase {
 			baseInjuryRate,
 			neutralSite,
 		});
-		this.playByPlay = new BasketballPlayByPlayLogger(doPlayByPlay);
+		this.playByPlay = new PlayByPlayLogger(doPlayByPlay);
 
 		this.team = teams; // If a team plays twice in a day, this needs to be a deep copy
 

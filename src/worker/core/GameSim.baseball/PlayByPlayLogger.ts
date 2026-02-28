@@ -1,7 +1,7 @@
 import type { POS_NUMBERS_INVERSE } from "../../../common/constants.baseball.ts";
 import { formatScoringSummaryEvent } from "../../../common/formatScoringSummaryEvent.baseball.ts";
 import type { TeamNum } from "../../../common/types.ts";
-import { BaseLogger } from "../GameSim/abstractPlayByPlayLogger.ts";
+import { BasePlayByPlayLogger } from "../GameSim/BasePlayByPlayLogger.ts";
 import type { Runner } from "./types.ts";
 
 export type PlayByPlayEventInput =
@@ -188,7 +188,7 @@ export type PlayByPlayEventScore = PlayByPlayEvent & {
 	pid: number;
 };
 
-class BaseballPlayByPlayLogger extends BaseLogger<PlayByPlayEvent> {
+class BaseballPlayByPlayLogger extends BasePlayByPlayLogger<PlayByPlayEvent> {
 	scoringSummary: PlayByPlayEventScore[] = [];
 	private period = 1;
 

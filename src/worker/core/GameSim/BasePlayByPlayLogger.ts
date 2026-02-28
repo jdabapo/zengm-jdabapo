@@ -1,7 +1,7 @@
-import { type PlayByPlayEvent as BaseballEvent } from "../GameSim.baseball/PlayByPlayLogger";
-import type { PlayByPlayEvent as FootballEvent } from "../GameSim.football/PlayByPlayLogger";
-import type { PlayByPlayEvent as BasketballEvent } from "../GameSim.basketball/PlayByPlayLogger";
-import type { PlayByPlayEvent as HockeyEvent } from "../GameSim.hockey/PlayByPlayLogger";
+import { type PlayByPlayEvent as BaseballEvent } from "../GameSim.baseball/PlayByPlayLogger.ts";
+import type { PlayByPlayEvent as FootballEvent } from "../GameSim.football/PlayByPlayLogger.ts";
+import type { PlayByPlayEvent as BasketballEvent } from "../GameSim.basketball/PlayByPlayLogger.ts";
+import type { PlayByPlayEvent as HockeyEvent } from "../GameSim.hockey/PlayByPlayLogger.ts";
 import type { TeamNum } from "../../../common/types";
 
 type PlayByPlayEventStat = {
@@ -24,7 +24,7 @@ export type BasePlayByPlayEvent =
 	| HockeyEvent
 	| PlayByPlayEventStat
 	| PlayByPlayInitEvent;
-export abstract class BaseLogger<
+export abstract class BasePlayByPlayLogger<
 	T extends BasePlayByPlayEvent,
 > implements IPlayByPlayLogger<T> {
 	active: boolean = false;

@@ -17,7 +17,7 @@ import getWinner from "../../../common/getWinner.ts";
 import { maxBy } from "../../../common/utils.ts";
 import { choice } from "../../../common/random.ts";
 import { PHASE } from "../../../common/index.ts";
-import BaseballPlayByPlayLogger from "./PlayByPlayLogger.ts";
+import PlayByPlayLogger from "./PlayByPlayLogger.ts";
 
 const teamNums: [TeamNum, TeamNum] = [0, 1];
 
@@ -56,7 +56,7 @@ class GameSim extends GameSimBase {
 
 	d: TeamNum;
 
-	playByPlay: BaseballPlayByPlayLogger;
+	playByPlay: PlayByPlayLogger;
 
 	// When the third out of an inning would have happened except for an error, any further runs are unearned to the team. Same applies to the pitcher if it's the same pitcher, but for a new reliever mid inning, they start with ERs unless another error happens to put it over the limit
 	outsIfNoErrors!: number;
@@ -95,7 +95,7 @@ class GameSim extends GameSimBase {
 			neutralSite,
 		});
 
-		this.playByPlay = new BaseballPlayByPlayLogger(doPlayByPlay);
+		this.playByPlay = new PlayByPlayLogger(doPlayByPlay);
 
 		// If a team plays twice in a day, this needs to be a deep copy
 		const playoffs = g.get("phase") === PHASE.PLAYOFFS;
