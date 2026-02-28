@@ -16,7 +16,7 @@ import getCompositeFactor from "./getCompositeFactor.ts";
 import { penalties, penaltyTypes } from "../GameSim.hockey/penalties.ts";
 import PenaltyBox from "./PenaltyBox.ts";
 import getInjuryRate from "../GameSim.basketball/getInjuryRate.ts";
-import GameSimBase from "../../core/GameSim/GameSimBase.ts";
+import GameSimBase from "../GameSim/GameSimBase.ts";
 import { orderBy, range } from "../../../common/utils.ts";
 import { getStartingAndBackupGoalies } from "./getStartingAndBackupGoalies.ts";
 import type { TeamNum } from "../../../common/types.ts";

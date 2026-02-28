@@ -7,7 +7,7 @@ import type {
 	PlayerInjury,
 	TeamNum,
 } from "../../../common/types.ts";
-import GameSimBase from "../../core/GameSim/GameSimBase.ts";
+import GameSimBase from "../GameSim/GameSimBase.ts";
 import { maxBy } from "../../../common/utils.ts";
 import {
 	type BlockType,

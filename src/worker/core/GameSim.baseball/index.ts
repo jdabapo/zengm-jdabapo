@@ -12,7 +12,7 @@ import getInjuryRate from "../GameSim.basketball/getInjuryRate.ts";
 import Team from "./Team.ts";
 import { fatigueFactor } from "./fatigueFactor.ts";
 import { infoDefense } from "../player/ovr.baseball.ts";
-import GameSimBase from "../../core/GameSim/GameSimBase.ts";
+import GameSimBase from "../GameSim/GameSimBase.ts";
 import getWinner from "../../../common/getWinner.ts";
 import { maxBy } from "../../../common/utils.ts";
 import { choice } from "../../../common/random.ts";

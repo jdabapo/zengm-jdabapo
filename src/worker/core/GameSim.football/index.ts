@@ -23,7 +23,7 @@ import Play, {
 	SCRIMMAGE_TWO_POINT_CONVERSION,
 } from "./Play.ts";
 import LngTracker from "./LngTracker.ts";
-import GameSimBase from "../../core/GameSim/GameSimBase.ts";
+import GameSimBase from "../GameSim/GameSimBase.ts";
 import { PHASE, STARTING_NUM_TIMEOUTS } from "../../../common/index.ts";
 import type { TeamNum } from "../../../common/types.ts";
 
