@@ -1,8 +1,8 @@
-import { type PlayByPlayEvent as BaseballEvent } from "../GameSim.baseball/PlayByPlayLogger.ts";
+import type { PlayByPlayEvent as BaseballEvent } from "../GameSim.baseball/PlayByPlayLogger.ts";
 import type { PlayByPlayEvent as FootballEvent } from "../GameSim.football/PlayByPlayLogger.ts";
 import type { PlayByPlayEvent as BasketballEvent } from "../GameSim.basketball/PlayByPlayLogger.ts";
 import type { PlayByPlayEvent as HockeyEvent } from "../GameSim.hockey/PlayByPlayLogger.ts";
-import type { TeamNum } from "../../../common/types";
+import type { TeamNum } from "../../../common/types.ts";
 
 type PlayByPlayEventStat = {
 	type: "stat";
@@ -17,15 +17,15 @@ type PlayByPlayInitEvent = {
 	boxScore: any;
 };
 
-export type BasePlayByPlayEvent =
+export type PlayByPlayBaseEvent =
 	| FootballEvent
 	| BaseballEvent
 	| BasketballEvent
 	| HockeyEvent
 	| PlayByPlayEventStat
 	| PlayByPlayInitEvent;
-export abstract class BasePlayByPlayLogger<
-	T extends BasePlayByPlayEvent,
+export abstract class PlayByPlayLoggerBase<
+	T extends PlayByPlayBaseEvent,
 > implements IPlayByPlayLogger<T> {
 	active: boolean = false;
 	playByPlay: T[] = [];
@@ -64,7 +64,7 @@ export abstract class BasePlayByPlayLogger<
 	}
 }
 
-interface IPlayByPlayLogger<T extends BasePlayByPlayEvent> {
+interface IPlayByPlayLogger<T extends PlayByPlayBaseEvent> {
 	logEvent(event: T): void;
 	logStat(
 		t: TeamNum,

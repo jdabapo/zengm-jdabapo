@@ -1,6 +1,6 @@
 import { formatScoringSummaryEvent } from "../../../common/formatScoringSummaryEvent.hockey.ts";
 import type { TeamNum } from "../../../common/types.ts";
-import { BasePlayByPlayLogger } from "../GameSim/BasePlayByPlayLogger.ts";
+import { PlayByPlayLoggerBase } from "../GameSim/PlayByPlayLoggerBase.ts";
 import type { penaltyTypes } from "./penalties.ts";
 
 type PlayByPlayEventInputScore =
@@ -134,7 +134,7 @@ export type PlayByPlayEventScore = PlayByPlayEventInputScore & {
 	quarter: number;
 };
 
-class HockeyPlayByPlayLogger extends BasePlayByPlayLogger<PlayByPlayEvent> {
+class HockeyPlayByPlayLogger extends PlayByPlayLoggerBase<PlayByPlayEvent> {
 	scoringSummary: PlayByPlayEventScore[] = [];
 	private quarter = 1;
 	constructor(active: boolean) {

@@ -1,5 +1,5 @@
 import type { TeamNum } from "../../../common/types";
-import { BasePlayByPlayLogger } from "../GameSim/BasePlayByPlayLogger.ts";
+import { PlayByPlayLoggerBase } from "../GameSim/PlayByPlayLoggerBase.ts";
 
 export type BlockType =
 	| "blkAtRim"
@@ -219,7 +219,7 @@ const isScoringPlay = (
 	return scoringTypes.has(event.type);
 };
 
-class BasketballPlayByPlayLogger extends BasePlayByPlayLogger<PlayByPlayEvent> {
+class BasketballPlayByPlayLogger extends PlayByPlayLoggerBase<PlayByPlayEvent> {
 	private period = 1;
 	constructor(active: boolean) {
 		super(active);
