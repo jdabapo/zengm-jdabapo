@@ -11,7 +11,7 @@ import {
 import type { PlayerInjury } from "../../common/types.ts";
 import { formatScoringSummaryEvent } from "../../common/formatScoringSummaryEvent.baseball.ts";
 import { formatLiveGameStat } from "./formatLiveGameStat.ts";
-import type { PlayByPlayBaseEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
+import type { PlayByPlayEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
 
 export type BoxScorePlayer = {
 	name: string;
@@ -501,7 +501,7 @@ const processLiveGameEvents = ({
 	quarters,
 	sportState,
 }: {
-	events: PlayByPlayBaseEvent<PlayByPlayEventInput>[];
+	events: PlayByPlayEvent<PlayByPlayEventInput>[];
 	boxScore: {
 		gid: number;
 		quarter: string;

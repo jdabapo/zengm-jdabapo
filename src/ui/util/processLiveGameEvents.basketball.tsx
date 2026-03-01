@@ -5,7 +5,7 @@ import type { PlayByPlayEventOutput } from "../../worker/core/GameSim.basketball
 import type { ReactNode } from "react";
 import { formatClock } from "../../common/formatClock.ts";
 import { formatLiveGameStat } from "./formatLiveGameStat.ts";
-import type { PlayByPlayBaseEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
+import type { PlayByPlayEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
 
 const getPronoun = (pronoun: Parameters<typeof helpers.pronoun>[1]) => {
 	return helpers.pronoun(local.getState().gender, pronoun);
@@ -395,7 +395,7 @@ const processLiveGameEvents = ({
 	overtimes,
 	quarters,
 }: {
-	events: PlayByPlayBaseEvent<PlayByPlayEventOutput>[];
+	events: PlayByPlayEvent<PlayByPlayEventOutput>[];
 	boxScore: any;
 	overtimes: number;
 	quarters: string[];

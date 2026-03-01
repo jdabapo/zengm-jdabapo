@@ -20,14 +20,14 @@ export type PlayByPlayEventInit = {
 
 type SportEvent = FootballEvent | BaseballEvent | BasketballEvent | HockeyEvent;
 
-export type PlayByPlayBaseEvent<T extends SportEvent> =
+export type PlayByPlayEvent<T extends SportEvent> =
 	| T
 	| PlayByPlayEventStat
 	| PlayByPlayEventInit;
 
 export abstract class PlayByPlayLoggerBase<T extends SportEvent> {
 	active: boolean = false;
-	playByPlay: PlayByPlayBaseEvent<T>[] = [];
+	playByPlay: PlayByPlayEvent<T>[] = [];
 	constructor(active: boolean) {
 		this.active = active;
 	}

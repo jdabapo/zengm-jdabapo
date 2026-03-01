@@ -9,7 +9,7 @@ import type { ReactNode } from "react";
 import { formatClock } from "../../common/formatClock.ts";
 import type { PlayerInjury } from "../../common/types.ts";
 import { formatLiveGameStat } from "./formatLiveGameStat.ts";
-import type { PlayByPlayBaseEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
+import type { PlayByPlayEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
 type BoxScorePlayer = {
 	name: string;
 	pid: number;
@@ -523,7 +523,7 @@ const processLiveGameEvents = ({
 	quarters,
 	sportState,
 }: {
-	events: PlayByPlayBaseEvent<PlayByPlayEventOutput>[];
+	events: PlayByPlayEvent<PlayByPlayEventOutput>[];
 	boxScore: {
 		gid: number;
 		quarter: string;

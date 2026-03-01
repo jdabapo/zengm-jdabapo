@@ -7,7 +7,7 @@ import type {
 import type { PlayerInjury } from "../../common/types.ts";
 import { formatScoringSummaryEvent } from "../../common/formatScoringSummaryEvent.hockey.ts";
 import { formatClock } from "../../common/formatClock.ts";
-import type { PlayByPlayBaseEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
+import type { PlayByPlayEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
 
 let playersByPidGid: number | undefined;
 let playersByPid:
@@ -163,7 +163,7 @@ const processLiveGameEvents = ({
 	overtimes,
 	quarters,
 }: {
-	events: PlayByPlayBaseEvent<PlayByPlayEventOutput>[];
+	events: PlayByPlayEvent<PlayByPlayEventOutput>[];
 	boxScore: {
 		gid: number;
 		quarter: string;

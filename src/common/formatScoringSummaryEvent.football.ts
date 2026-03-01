@@ -2,10 +2,10 @@ import type {
 	PlayByPlayEventOutput,
 	PlayByPlayEventScore,
 } from "../worker/core/GameSim.football/PlayByPlayLogger.ts";
-import type { PlayByPlayBaseEvent } from "../worker/core/GameSim/PlayByPlayLoggerBase.ts";
+import type { PlayByPlayEvent } from "../worker/core/GameSim/PlayByPlayLoggerBase.ts";
 
 export const formatScoringSummaryEvent = (
-	event: PlayByPlayBaseEvent<PlayByPlayEventOutput>,
+	event: PlayByPlayEvent<PlayByPlayEventOutput>,
 	period: number,
 ): PlayByPlayEventScore | undefined => {
 	if (
