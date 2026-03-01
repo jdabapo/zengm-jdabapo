@@ -1,6 +1,6 @@
-import type { PlayByPlayEvent as BaseballEvent } from "../GameSim.baseball/PlayByPlayLogger.ts";
+import type { PlayByPlayEventInput as BaseballEvent } from "../GameSim.baseball/PlayByPlayLogger.ts";
 import type { PlayByPlayEvent as FootballEvent } from "../GameSim.football/PlayByPlayLogger.ts";
-import type { PlayByPlayEvent as BasketballEvent } from "../GameSim.basketball/PlayByPlayLogger.ts";
+import type { PlayByPlayEventInput as BasketballEvent } from "../GameSim.basketball/PlayByPlayLogger.ts";
 import type { PlayByPlayEvent as HockeyEvent } from "../GameSim.hockey/PlayByPlayLogger.ts";
 import type { TeamNum } from "../../../common/types.ts";
 
@@ -17,15 +17,16 @@ export type PlayByPlayEventInit = {
 	boxScore: any;
 };
 
-export type PlayByPlayBaseEvent =
-	| FootballEvent
-	| BaseballEvent
-	| BasketballEvent
-	| HockeyEvent;
+type SportEvent = FootballEvent | BaseballEvent | BasketballEvent | HockeyEvent;
 
-export abstract class PlayByPlayLoggerBase<T extends PlayByPlayBaseEvent> {
+export type PlayByPlayBaseEvent<T extends SportEvent> =
+	| T
+	| PlayByPlayEventStat
+	| PlayByPlayEventInit;
+
+export abstract class PlayByPlayLoggerBase<T extends SportEvent> {
 	active: boolean = false;
-	playByPlay: (T | PlayByPlayEventStat | PlayByPlayEventInit)[] = [];
+	playByPlay: PlayByPlayBaseEvent<T>[] = [];
 	constructor(active: boolean) {
 		this.active = active;
 	}

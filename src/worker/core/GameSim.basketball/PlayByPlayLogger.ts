@@ -1,9 +1,5 @@
 import type { TeamNum } from "../../../common/types";
-import {
-	PlayByPlayLoggerBase,
-	type PlayByPlayEventStat,
-	type PlayByPlayEventInit,
-} from "../GameSim/PlayByPlayLoggerBase.ts";
+import { PlayByPlayLoggerBase } from "../GameSim/PlayByPlayLoggerBase.ts";
 
 export type BlockType =
 	| "blkAtRim"
@@ -194,7 +190,7 @@ type PlayByPlayEventInputNoScore =
 			timeouts: [number, number];
 	  };
 
-type PlayByPlayEventInput =
+export type PlayByPlayEventInput =
 	| PlayByPlayEventInputScore
 	| PlayByPlayEventInputNoScore;
 
@@ -203,9 +199,7 @@ type PlayByPlayEventScore = PlayByPlayEventInputScore & { period: number };
 
 export type PlayByPlayEvent =
 	| PlayByPlayEventScore
-	| PlayByPlayEventInputNoScore
-	| PlayByPlayEventStat
-	| PlayByPlayEventInit;
+	| PlayByPlayEventInputNoScore;
 
 const scoringTypes: Set<PlayByPlayEventInput["type"]> = new Set([
 	"fgAtRim",

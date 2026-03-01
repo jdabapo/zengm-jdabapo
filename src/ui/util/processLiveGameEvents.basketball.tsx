@@ -1,10 +1,11 @@
 import { getPeriodName } from "../../common/index.ts";
 import { choice } from "../../common/random.ts";
 import { helpers, local } from "./index.ts";
-import type { PlayByPlayEvent } from "../../worker/core/GameSim.basketball/PlayByPlayLogger.ts";
+import type { PlayByPlayEventInput } from "../../worker/core/GameSim.basketball/PlayByPlayLogger.ts";
 import type { ReactNode } from "react";
 import { formatClock } from "../../common/formatClock.ts";
 import { formatLiveGameStat } from "./formatLiveGameStat.ts";
+import type { PlayByPlayBaseEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
 
 const getPronoun = (pronoun: Parameters<typeof helpers.pronoun>[1]) => {
 	return helpers.pronoun(local.getState().gender, pronoun);
@@ -27,7 +28,7 @@ const getName = (pid: number) => {
 };
 
 export const getText = (
-	event: PlayByPlayEvent,
+	event: PlayByPlayEventInput,
 	boxScore: {
 		numPeriods: number;
 		teams: [{ pts: number; players: any[] }, { pts: number; players: any[] }];
@@ -394,7 +395,7 @@ const processLiveGameEvents = ({
 	overtimes,
 	quarters,
 }: {
-	events: PlayByPlayEvent[];
+	events: PlayByPlayBaseEvent<PlayByPlayEventInput>[];
 	boxScore: any;
 	overtimes: number;
 	quarters: string[];
