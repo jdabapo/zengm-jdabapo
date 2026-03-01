@@ -1,7 +1,7 @@
 import { getPeriodName } from "../../common/index.ts";
 import { choice } from "../../common/random.ts";
 import { helpers, local } from "./index.ts";
-import type { PlayByPlayEventInput } from "../../worker/core/GameSim.basketball/PlayByPlayLogger.ts";
+import type { PlayByPlayEventOutput } from "../../worker/core/GameSim.basketball/PlayByPlayLogger.ts";
 import type { ReactNode } from "react";
 import { formatClock } from "../../common/formatClock.ts";
 import { formatLiveGameStat } from "./formatLiveGameStat.ts";
@@ -28,7 +28,7 @@ const getName = (pid: number) => {
 };
 
 export const getText = (
-	event: PlayByPlayEventInput,
+	event: PlayByPlayEventOutput,
 	boxScore: {
 		numPeriods: number;
 		teams: [{ pts: number; players: any[] }, { pts: number; players: any[] }];
@@ -395,7 +395,7 @@ const processLiveGameEvents = ({
 	overtimes,
 	quarters,
 }: {
-	events: PlayByPlayBaseEvent<PlayByPlayEventInput>[];
+	events: PlayByPlayBaseEvent<PlayByPlayEventOutput>[];
 	boxScore: any;
 	overtimes: number;
 	quarters: string[];

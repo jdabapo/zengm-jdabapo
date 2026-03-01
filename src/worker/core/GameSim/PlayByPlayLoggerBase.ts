@@ -1,6 +1,7 @@
+// Input rather than Output for baseball because that's the only sport where input and output objects are the same, so output doesn't exist
 import type { PlayByPlayEventInput as BaseballEvent } from "../GameSim.baseball/PlayByPlayLogger.ts";
 import type { PlayByPlayEventOutput as FootballEvent } from "../GameSim.football/PlayByPlayLogger.ts";
-import type { PlayByPlayEventInput as BasketballEvent } from "../GameSim.basketball/PlayByPlayLogger.ts";
+import type { PlayByPlayEventOutput as BasketballEvent } from "../GameSim.basketball/PlayByPlayLogger.ts";
 import type { PlayByPlayEventOutput as HockeyEvent } from "../GameSim.hockey/PlayByPlayLogger.ts";
 import type { TeamNum } from "../../../common/types.ts";
 

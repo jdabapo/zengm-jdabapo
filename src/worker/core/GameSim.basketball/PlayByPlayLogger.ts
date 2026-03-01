@@ -197,7 +197,7 @@ export type PlayByPlayEventInput =
 // Only add period to scoring events, since they are used for scoringSummary
 type PlayByPlayEventScore = PlayByPlayEventInputScore & { period: number };
 
-export type PlayByPlayEvent =
+export type PlayByPlayEventOutput =
 	| PlayByPlayEventScore
 	| PlayByPlayEventInputNoScore;
 
@@ -219,7 +219,7 @@ const isScoringPlay = (
 	return scoringTypes.has(event.type);
 };
 
-class BasketballPlayByPlayLogger extends PlayByPlayLoggerBase<PlayByPlayEvent> {
+class BasketballPlayByPlayLogger extends PlayByPlayLoggerBase<PlayByPlayEventOutput> {
 	private period = 1;
 	constructor(active: boolean) {
 		super(active);
