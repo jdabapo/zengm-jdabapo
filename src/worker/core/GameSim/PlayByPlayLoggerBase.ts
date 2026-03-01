@@ -23,15 +23,13 @@ export type PlayByPlayBaseEvent =
 	| BasketballEvent
 	| HockeyEvent;
 
-export abstract class PlayByPlayLoggerBase<
-	T extends PlayByPlayBaseEvent,
-> implements IPlayByPlayLogger<T> {
+export abstract class PlayByPlayLoggerBase<T extends PlayByPlayBaseEvent> {
 	active: boolean = false;
-	playByPlay: T[] = [];
+	playByPlay: (T | PlayByPlayEventStat | PlayByPlayEventInit)[] = [];
 	constructor(active: boolean) {
 		this.active = active;
 	}
-	abstract logEvent(event: any): void;
+	abstract logEvent(event: unknown): void;
 
 	logStat(t: TeamNum, pid: number | undefined | null, s: string, amt: number) {
 		const statEvent = {
@@ -40,7 +38,7 @@ export abstract class PlayByPlayLoggerBase<
 			pid,
 			s,
 			amt,
-		} as T; // Type cast because typescript can't infer this is T
+		} as const;
 		if (!this.active) {
 			return;
 		}
@@ -48,7 +46,7 @@ export abstract class PlayByPlayLoggerBase<
 		this.playByPlay.push(statEvent);
 	}
 
-	getPlayByPlay(boxScore: any): T[] | undefined {
+	getPlayByPlay(boxScore: any) {
 		if (!this.active) {
 			return;
 		}
@@ -57,19 +55,8 @@ export abstract class PlayByPlayLoggerBase<
 			{
 				type: "init",
 				boxScore,
-			} as T,
+			} as PlayByPlayEventInit,
 			...this.playByPlay,
 		];
 	}
-}
-
-interface IPlayByPlayLogger<T extends PlayByPlayBaseEvent> {
-	logEvent(event: T): void;
-	logStat(
-		t: TeamNum,
-		pid: number | undefined | null,
-		s: string,
-		amt: number,
-	): void;
-	getPlayByPlay(boxScore: any): T[] | undefined;
 }

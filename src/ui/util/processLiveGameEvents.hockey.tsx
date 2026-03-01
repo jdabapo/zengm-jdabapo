@@ -207,7 +207,12 @@ const processLiveGameEvents = ({
 		// Swap teams order, so home team is at bottom in box score
 		const actualT = eAny.t === 0 ? 1 : eAny.t === 1 ? 0 : undefined;
 
-		if (e.type !== "init" && !quarters.includes(e.quarter)) {
+		if (
+			e.type !== "init" &&
+			e.type !== "stat" &&
+			e.quarter !== undefined &&
+			!quarters.includes(e.quarter)
+		) {
 			quarters.push(e.quarter);
 			boxScore.teams[0].ptsQtrs.push(0);
 			boxScore.teams[1].ptsQtrs.push(0);
@@ -232,7 +237,7 @@ const processLiveGameEvents = ({
 				)}${quarter}`;
 			}
 
-			if (e.type !== "stat" && e.type !== "playersOnIce") {
+			if (e.type !== "playersOnIce") {
 				boxScore.time = formatClock(e.clock);
 			}
 		}

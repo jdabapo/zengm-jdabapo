@@ -131,9 +131,10 @@ type PlayByPlayEventInput =
 	  };
 
 export type PlayByPlayEvent =
-	| ((PlayByPlayEventInput | PlayByPlayEventStat) & {
+	| (PlayByPlayEventInput & {
 			quarter: number;
 	  })
+	| PlayByPlayEventStat
 	| PlayByPlayEventInit;
 
 export type PlayByPlayEventScore = PlayByPlayEventInputScore & {
