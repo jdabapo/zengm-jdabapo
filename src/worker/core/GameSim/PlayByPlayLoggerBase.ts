@@ -1,7 +1,7 @@
 import type { PlayByPlayEventInput as BaseballEvent } from "../GameSim.baseball/PlayByPlayLogger.ts";
-import type { PlayByPlayEvent as FootballEvent } from "../GameSim.football/PlayByPlayLogger.ts";
+import type { PlayByPlayEventOutput as FootballEvent } from "../GameSim.football/PlayByPlayLogger.ts";
 import type { PlayByPlayEventInput as BasketballEvent } from "../GameSim.basketball/PlayByPlayLogger.ts";
-import type { PlayByPlayEvent as HockeyEvent } from "../GameSim.hockey/PlayByPlayLogger.ts";
+import type { PlayByPlayEventOutput as HockeyEvent } from "../GameSim.hockey/PlayByPlayLogger.ts";
 import type { TeamNum } from "../../../common/types.ts";
 
 export type PlayByPlayEventStat = {

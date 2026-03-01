@@ -1,12 +1,13 @@
 import { getPeriodName } from "../../common/index.ts";
 import { helpers, local } from "./index.ts";
 import type {
-	PlayByPlayEvent,
+	PlayByPlayEventOutput,
 	PlayByPlayEventScore,
 } from "../../worker/core/GameSim.hockey/PlayByPlayLogger.ts";
 import type { PlayerInjury } from "../../common/types.ts";
 import { formatScoringSummaryEvent } from "../../common/formatScoringSummaryEvent.hockey.ts";
 import { formatClock } from "../../common/formatClock.ts";
+import type { PlayByPlayBaseEvent } from "../../worker/core/GameSim/PlayByPlayLoggerBase.ts";
 
 let playersByPidGid: number | undefined;
 let playersByPid:
@@ -35,7 +36,7 @@ const newPossessionTypes: Record<string, boolean> = {
 };
 
 const getText = (
-	event: PlayByPlayEvent,
+	event: PlayByPlayEventOutput,
 	boxScore: {
 		numPeriods: number;
 		time: string;
@@ -162,7 +163,7 @@ const processLiveGameEvents = ({
 	overtimes,
 	quarters,
 }: {
-	events: PlayByPlayEvent[];
+	events: PlayByPlayBaseEvent<PlayByPlayEventOutput>[];
 	boxScore: {
 		gid: number;
 		quarter: string;

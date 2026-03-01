@@ -1,10 +1,6 @@
 import { formatScoringSummaryEvent } from "../../../common/formatScoringSummaryEvent.football.ts";
 import type { TeamNum } from "../../../common/types.ts";
-import {
-	PlayByPlayLoggerBase,
-	type PlayByPlayEventStat,
-	type PlayByPlayEventInit,
-} from "../GameSim/PlayByPlayLoggerBase.ts";
+import { PlayByPlayLoggerBase } from "../GameSim/PlayByPlayLoggerBase.ts";
 
 export type PlayByPlayEventInputScore =
 	| {
@@ -283,10 +279,8 @@ export type PlayByPlayEventInput =
 			timeouts: [number, number];
 	  };
 
-export type PlayByPlayEvent =
+export type PlayByPlayEventOutput =
 	| PlayByPlayEventInput
-	| PlayByPlayEventStat
-	| PlayByPlayEventInit
 	| {
 			type: "removeLastScore";
 	  }
@@ -305,7 +299,7 @@ export type PlayByPlayEventScore = PlayByPlayEventInputScore & {
 	quarter: number;
 };
 
-class FootballPlayByPlayLogger extends PlayByPlayLoggerBase<PlayByPlayEvent> {
+class FootballPlayByPlayLogger extends PlayByPlayLoggerBase<PlayByPlayEventOutput> {
 	scoringSummary: (
 		| PlayByPlayEventScore
 		| {
